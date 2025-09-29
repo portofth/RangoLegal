@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
-// 1. Cores personalizadas definidas em um só lugar
+// Importa todos os nossos arquivos de tela e lógica
+import 'theme_provider.dart';
+import 'perfil_screen.dart';
+import 'recomendacao_screen.dart';
+import 'dados_receitas.dart';
+import 'configuracoes_screen.dart';
+
+// Cores personalizadas
 const Color corAmareloClaro = Color(0xFFFFFDE7);
 const Color corAmareloPrincipal = Color(0xFFFBC02D);
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,16 +27,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'RangoLegal',
-      theme: ThemeData(
-        // 2. Tema moderno usando ColorScheme com a nova cor
-        colorScheme: ColorScheme.fromSeed(seedColor: corAmareloPrincipal),
-        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          title: 'RangoLegal',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: corAmareloPrincipal, brightness: Brightness.light),
+            scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: corAmareloPrincipal, brightness: Brightness.dark),
+            useMaterial3: true,
+          ),
+          themeMode: themeProvider.themeMode,
+          debugShowCheckedModeBanner: false,
+          home: const HomePage(),
+        );
+      },
     );
   }
 }
@@ -40,8 +61,9 @@ class _HomePageState extends State<HomePage> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     TelaReceitas(),
-    PlaceholderScreen(texto: 'Tela de Perfil'),
-    PlaceholderScreen(texto: 'Tela de Recomendações'),
+    PerfilNutricionalScreen(),
+    RecomendacaoScreen(),
+    ConfiguracoesScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -50,102 +72,95 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // NOVA FUNÇÃO PARA CONTROLAR A AÇÃO DO BOTÃO '+'
+  void _handleFabPress() {
+    switch (_selectedIndex) {
+      case 0: // Tela de Receitas
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Ação: Adicionar nova receita.')),
+        );
+        break;
+      case 1: // Tela de Perfil
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Ação: Criar novo perfil nutricional.')),
+        );
+        break;
+      case 2: // Tela de Recomendação
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Ação: Filtrar recomendações.')),
+        );
+        break;
+    }
+  }
+
+  final iconList = <IconData>[
+    Icons.list_alt_outlined,
+    Icons.person_outline,
+    Icons.star_outline,
+    Icons.settings_outlined,
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final navBarBackgroundColor = isDarkMode ? Colors.grey.shade900 : Colors.white;
+    final appBarBackgroundColor = isDarkMode ? Colors.grey.shade900 : Colors.white;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: appBarBackgroundColor,
         title: Text(
           'RangoLegal',
-          style: GoogleFonts.pacifico(
+          style: TextStyle(
+            fontFamily: 'Pacifico',
             fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: corAmareloPrincipal, // <-- COR ATUALIZADA
+            color: corAmareloPrincipal,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: corAmareloPrincipal, // <-- COR ATUALIZADA
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
-            label: 'Receitas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Recomendação',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: corAmareloPrincipal, // <-- COR ATUALIZADA
+      floatingActionButton: _selectedIndex == 3 // Se for a tela de Configurações...
+          ? null // ...esconde o botão.
+          : FloatingActionButton( // Caso contrário, mostra o botão
+              onPressed: _handleFabPress, // E atribui a nova função de ação
+              backgroundColor: corAmareloPrincipal,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.add, color: Colors.black),
+            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+        itemCount: iconList.length,
+        tabBuilder: (int index, bool isActive) {
+          return Icon(
+            iconList[index],
+            size: 24,
+            color: isActive ? corAmareloPrincipal : (isDarkMode ? Colors.white70 : Colors.grey.shade600),
+          );
+        },
+        activeIndex: _selectedIndex,
+        gapLocation: _selectedIndex == 3 ? GapLocation.none : GapLocation.center, // Esconde o recorte se o botão sumir
+        notchSmoothness: NotchSmoothness.softEdge,
         onTap: _onItemTapped,
+        backgroundColor: navBarBackgroundColor,
       ),
     );
   }
 }
 
+// O restante do código (TelaReceitas, DetalheReceitaScreen, etc.) não precisa de mudanças
 class TelaReceitas extends StatelessWidget {
   const TelaReceitas({super.key});
-
-  final List<Map<String, dynamic>> receitas = const [
-    {
-      "nome": "Bolo de Chocolate",
-      "categoria": "Sobremesa",
-      "imagem": "assets/images/bolo.webp",
-      "ingredientes": [
-        "3 ovos", "1 xícara de açúcar", "2 xícaras de farinha de trigo",
-        "1 xícara de chocolate em pó", "1/2 xícara de óleo", "1 xícara de água quente",
-        "1 colher de sopa de fermento em pó"
-      ],
-      "modo_preparo": [
-        "Bata os ovos e o açúcar até obter um creme fofo.",
-        "Adicione o óleo e o chocolate em pó, misturando bem.",
-        "Intercale a adição da farinha de trigo e da água quente, mexendo até a massa ficar homogênea.",
-        "Por último, adicione o fermento em pó e misture delicadamente.",
-        "Despeje a massa em uma forma untada e enfarinhada.",
-        "Asse em forno preaquecido a 180°C por aproximadamente 40 minutos."
-      ]
-    },
-    {
-      "nome": "Pizza Margherita",
-      "categoria": "Massas",
-      "imagem": "assets/images/pizza.webp",
-      "ingredientes": [
-        "1 disco de massa de pizza", "1/2 xícara de molho de tomate", "150g de queijo muçarela ralado",
-        "Tomates cereja cortados ao meio", "Folhas de manjericão fresco a gosto", "Azeite de oliva a gosto"
-      ],
-      "modo_preparo": [
-        "Pré-aqueça o forno a 220°C.", "Espalhe o molho de tomate sobre o disco de pizza.",
-        "Cubra com o queijo muçarela.", "Distribua os tomates cereja sobre o queijo.",
-        "Leve ao forno por 10-15 minutos, ou até a massa dourar e o queijo derreter.",
-        "Retire do forno, regue com azeite e decore com as folhas de manjericão."
-      ]
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: receitas.length,
+      itemCount: todasAsReceitas.length,
       itemBuilder: (context, index) {
-        final receita = receitas[index];
+        final receita = todasAsReceitas[index];
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           elevation: 2,
@@ -179,19 +194,19 @@ class TelaReceitas extends StatelessWidget {
 
 class DetalheReceitaScreen extends StatelessWidget {
   final Map<String, dynamic> receita;
-
   const DetalheReceitaScreen({super.key, required this.receita});
-
   @override
   Widget build(BuildContext context) {
     final List<String> ingredientes = receita['ingredientes'];
     final List<String> modoPreparo = receita['modo_preparo'];
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final appBarBackgroundColor = isDarkMode ? Theme.of(context).scaffoldBackgroundColor : Colors.white;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: appBarBackgroundColor,
         elevation: 0,
-        foregroundColor: Colors.black,
+        foregroundColor: isDarkMode ? Colors.white : Colors.black,
         title: Text(receita['nome']),
       ),
       body: SingleChildScrollView(
@@ -220,7 +235,7 @@ class DetalheReceitaScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      Icon(Icons.check_circle_outline, size: 18, color: corAmareloPrincipal), // <-- COR ATUALIZADA
+                      const Icon(Icons.check_circle_outline, size: 18, color: corAmareloPrincipal),
                       const SizedBox(width: 8),
                       Expanded(child: Text(ingrediente)),
                     ],
@@ -237,7 +252,7 @@ class DetalheReceitaScreen extends StatelessWidget {
               for (int i = 0; i < modoPreparo.length; i++)
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: corAmareloClaro, // <-- COR ATUALIZADA
+                    backgroundColor: corAmareloClaro,
                     child: Text('${i + 1}', style: const TextStyle(color: Colors.black87)),
                   ),
                   title: Text(modoPreparo[i]),
@@ -253,7 +268,6 @@ class DetalheReceitaScreen extends StatelessWidget {
 class PlaceholderScreen extends StatelessWidget {
   final String texto;
   const PlaceholderScreen({super.key, required this.texto});
-
   @override
   Widget build(BuildContext context) {
     return Center(

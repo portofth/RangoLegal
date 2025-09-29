@@ -7,6 +7,8 @@
 /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/fonts/Pacifico-Regular.ttf
 /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/fonts/MaterialIcons-Regular.otf
 /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/assets/images/bolo.webp
+/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/assets/images/salada.webp
+/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/assets/images/sopa.webp
 /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/assets/images/pizza.webp
 /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/AssetManifest.json
 /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets/FontManifest.json
