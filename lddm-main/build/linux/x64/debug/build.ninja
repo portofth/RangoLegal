@@ -39,13 +39,13 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/maria/meu_app/build/linux/x64/debug/
+cmake_ninja_workdir = /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug && /usr/bin/ccmake -S/home/maria/meu_app/linux -B/home/maria/meu_app/build/linux/x64/debug
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug && /usr/bin/ccmake -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
   DESC = Running CMake cache editor...
   pool = console
   restat = 1
@@ -57,7 +57,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug && /usr/bin/cmake --regenerate-during-build -S/home/maria/meu_app/linux -B/home/maria/meu_app/build/linux/x64/debug
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug && /usr/bin/cmake --regenerate-during-build -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -75,7 +75,7 @@ build list_install_components: phony
 # Utility command for install
 
 build CMakeFiles/install.util: CUSTOM_COMMAND all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug && /usr/bin/cmake -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug && /usr/bin/cmake -P cmake_install.cmake
   DESC = Install the project...
   pool = console
   restat = 1
@@ -87,7 +87,7 @@ build install: phony CMakeFiles/install.util
 # Utility command for install/local
 
 build CMakeFiles/install/local.util: CUSTOM_COMMAND all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -99,7 +99,7 @@ build install/local: phony CMakeFiles/install/local.util
 # Utility command for install/strip
 
 build CMakeFiles/install/strip.util: CUSTOM_COMMAND all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug && /usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug && /usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
   DESC = Installing the project stripped...
   pool = console
   restat = 1
@@ -108,21 +108,21 @@ build install/strip: phony CMakeFiles/install/strip.util
 
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
-# /home/maria/meu_app/linux/CMakeLists.txt
+# /home/maria/RangoLegal/lddm-main/linux/CMakeLists.txt
 # =============================================================================
 
 
 #############################################
 # Utility command for flutter_assemble
 
-build flutter/flutter_assemble: phony flutter/CMakeFiles/flutter_assemble /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_engine.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_call.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_response.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_value.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_view.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/flutter_linux.h flutter/_phony_
+build flutter/flutter_assemble: phony flutter/CMakeFiles/flutter_assemble /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_engine.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_call.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_response.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_value.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_view.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/flutter_linux.h flutter/_phony_
 
 
 #############################################
 # Utility command for edit_cache
 
 build flutter/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/flutter && /usr/bin/ccmake -S/home/maria/meu_app/linux -B/home/maria/meu_app/build/linux/x64/debug
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter && /usr/bin/ccmake -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
   DESC = Running CMake cache editor...
   pool = console
   restat = 1
@@ -134,7 +134,7 @@ build flutter/edit_cache: phony flutter/CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build flutter/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/flutter && /usr/bin/cmake --regenerate-during-build -S/home/maria/meu_app/linux -B/home/maria/meu_app/build/linux/x64/debug
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter && /usr/bin/cmake --regenerate-during-build -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -152,7 +152,7 @@ build flutter/list_install_components: phony
 # Utility command for install
 
 build flutter/CMakeFiles/install.util: CUSTOM_COMMAND flutter/all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/flutter && /usr/bin/cmake -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter && /usr/bin/cmake -P cmake_install.cmake
   DESC = Install the project...
   pool = console
   restat = 1
@@ -164,7 +164,7 @@ build flutter/install: phony flutter/CMakeFiles/install.util
 # Utility command for install/local
 
 build flutter/CMakeFiles/install/local.util: CUSTOM_COMMAND flutter/all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/flutter && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -176,7 +176,7 @@ build flutter/install/local: phony flutter/CMakeFiles/install/local.util
 # Utility command for install/strip
 
 build flutter/CMakeFiles/install/strip.util: CUSTOM_COMMAND flutter/all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/flutter && /usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter && /usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
   DESC = Installing the project stripped...
   pool = console
   restat = 1
@@ -187,20 +187,20 @@ build flutter/install/strip: phony flutter/CMakeFiles/install/strip.util
 #############################################
 # Phony custom command for flutter/CMakeFiles/flutter_assemble
 
-build flutter/CMakeFiles/flutter_assemble | ${cmake_ninja_workdir}flutter/CMakeFiles/flutter_assemble: phony /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_engine.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_call.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_response.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_value.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_view.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/flutter_linux.h
+build flutter/CMakeFiles/flutter_assemble | ${cmake_ninja_workdir}flutter/CMakeFiles/flutter_assemble: phony /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_engine.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_call.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_response.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_value.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_view.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/flutter_linux.h
 
 
 #############################################
-# Custom command for /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so
+# Custom command for /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so
 
-build /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_engine.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_call.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_response.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_value.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_view.h /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/flutter_linux.h flutter/_phony_ | ${cmake_ninja_workdir}flutter/_phony_: CUSTOM_COMMAND
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/flutter && /usr/bin/cmake -E env FLUTTER_ROOT=/usr/lib/flutter PROJECT_DIR=/home/maria/meu_app DART_DEFINES=RkxVVFRFUl9WRVJTSU9OPTMuMzIuNw==,RkxVVFRFUl9DSEFOTkVMPQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049YXJjaGxpbnV4YQ==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049MzlkNmQ2ZTY5OQ==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My44LjE= DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=/home/maria/meu_app/.dart_tool/package_config.json FLUTTER_TARGET=/home/maria/meu_app/lib/main.dart /usr/lib/flutter/packages/flutter_tools/bin/tool_backend.sh linux-x64 Debug
-  DESC = Generating /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_engine.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_call.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_method_response.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_value.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/fl_view.h, /home/maria/meu_app/linux/flutter/ephemeral/flutter_linux/flutter_linux.h, _phony_
+build /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_engine.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_call.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_response.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_value.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_view.h /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/flutter_linux.h flutter/_phony_ | ${cmake_ninja_workdir}flutter/_phony_: CUSTOM_COMMAND
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter && /usr/bin/cmake -E env FLUTTER_ROOT=/usr/lib/flutter PROJECT_DIR=/home/maria/RangoLegal/lddm-main DART_DEFINES=RkxVVFRFUl9WRVJTSU9OPTMuMzIuNw==,RkxVVFRFUl9DSEFOTkVMPQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049YXJjaGxpbnV4YQ==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049MzlkNmQ2ZTY5OQ==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My44LjE= DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=/home/maria/RangoLegal/lddm-main/.dart_tool/package_config.json FLUTTER_TARGET=/home/maria/RangoLegal/lddm-main/lib/main.dart /usr/lib/flutter/packages/flutter_tools/bin/tool_backend.sh linux-x64 Debug
+  DESC = Generating /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_engine.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_call.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_method_response.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_value.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/fl_view.h, /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/flutter_linux/flutter_linux.h, _phony_
   restat = 1
 
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
-# /home/maria/meu_app/linux/CMakeLists.txt
+# /home/maria/RangoLegal/lddm-main/linux/CMakeLists.txt
 # =============================================================================
 
 # =============================================================================
@@ -210,32 +210,32 @@ build /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so /home/
 #############################################
 # Order-only phony target for meu_app
 
-build cmake_object_order_depends_target_meu_app: phony || flutter/flutter_assemble
+build cmake_object_order_depends_target_meu_app: phony || cmake_object_order_depends_target_url_launcher_linux_plugin flutter/flutter_assemble
 
-build runner/CMakeFiles/meu_app.dir/main.cc.o: CXX_COMPILER__meu_app_unscanned_Debug /home/maria/meu_app/linux/runner/main.cc || cmake_object_order_depends_target_meu_app
+build runner/CMakeFiles/meu_app.dir/main.cc.o: CXX_COMPILER__meu_app_unscanned_Debug /home/maria/RangoLegal/lddm-main/linux/runner/main.cc || cmake_object_order_depends_target_meu_app
   CONFIG = Debug
   DEFINES = -DAPPLICATION_ID=\"com.example.meu_app\"
   DEP_FILE = runner/CMakeFiles/meu_app.dir/main.cc.o.d
   FLAGS = -g -Wall -Werror -pthread
-  INCLUDES = -I/home/maria/meu_app/linux -I/home/maria/meu_app/linux/flutter/ephemeral -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
+  INCLUDES = -I/home/maria/RangoLegal/lddm-main/linux -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux/linux/include -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
   OBJECT_DIR = runner/CMakeFiles/meu_app.dir
   OBJECT_FILE_DIR = runner/CMakeFiles/meu_app.dir
 
-build runner/CMakeFiles/meu_app.dir/my_application.cc.o: CXX_COMPILER__meu_app_unscanned_Debug /home/maria/meu_app/linux/runner/my_application.cc || cmake_object_order_depends_target_meu_app
+build runner/CMakeFiles/meu_app.dir/my_application.cc.o: CXX_COMPILER__meu_app_unscanned_Debug /home/maria/RangoLegal/lddm-main/linux/runner/my_application.cc || cmake_object_order_depends_target_meu_app
   CONFIG = Debug
   DEFINES = -DAPPLICATION_ID=\"com.example.meu_app\"
   DEP_FILE = runner/CMakeFiles/meu_app.dir/my_application.cc.o.d
   FLAGS = -g -Wall -Werror -pthread
-  INCLUDES = -I/home/maria/meu_app/linux -I/home/maria/meu_app/linux/flutter/ephemeral -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
+  INCLUDES = -I/home/maria/RangoLegal/lddm-main/linux -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux/linux/include -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
   OBJECT_DIR = runner/CMakeFiles/meu_app.dir
   OBJECT_FILE_DIR = runner/CMakeFiles/meu_app.dir
 
-build runner/CMakeFiles/meu_app.dir/__/flutter/generated_plugin_registrant.cc.o: CXX_COMPILER__meu_app_unscanned_Debug /home/maria/meu_app/linux/flutter/generated_plugin_registrant.cc || cmake_object_order_depends_target_meu_app
+build runner/CMakeFiles/meu_app.dir/__/flutter/generated_plugin_registrant.cc.o: CXX_COMPILER__meu_app_unscanned_Debug /home/maria/RangoLegal/lddm-main/linux/flutter/generated_plugin_registrant.cc || cmake_object_order_depends_target_meu_app
   CONFIG = Debug
   DEFINES = -DAPPLICATION_ID=\"com.example.meu_app\"
   DEP_FILE = runner/CMakeFiles/meu_app.dir/__/flutter/generated_plugin_registrant.cc.o.d
   FLAGS = -g -Wall -Werror -pthread
-  INCLUDES = -I/home/maria/meu_app/linux -I/home/maria/meu_app/linux/flutter/ephemeral -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
+  INCLUDES = -I/home/maria/RangoLegal/lddm-main/linux -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux/linux/include -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
   OBJECT_DIR = runner/CMakeFiles/meu_app.dir
   OBJECT_FILE_DIR = runner/CMakeFiles/meu_app.dir/__/flutter
 
@@ -247,12 +247,12 @@ build runner/CMakeFiles/meu_app.dir/__/flutter/generated_plugin_registrant.cc.o:
 #############################################
 # Link the executable intermediates_do_not_run/meu_app
 
-build intermediates_do_not_run/meu_app: CXX_EXECUTABLE_LINKER__meu_app_Debug runner/CMakeFiles/meu_app.dir/main.cc.o runner/CMakeFiles/meu_app.dir/my_application.cc.o runner/CMakeFiles/meu_app.dir/__/flutter/generated_plugin_registrant.cc.o | /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so /usr/lib/libgtk-3.so /usr/lib/libgdk-3.so /usr/lib/libz.so /usr/lib/libpangocairo-1.0.so /usr/lib/libcairo-gobject.so /usr/lib/libgdk_pixbuf-2.0.so /usr/lib/libatk-1.0.so /usr/lib/libpango-1.0.so /usr/lib/libcairo.so /usr/lib/libharfbuzz.so /usr/lib/libgio-2.0.so /usr/lib/libgobject-2.0.so /usr/lib/libglib-2.0.so || flutter/flutter_assemble
+build intermediates_do_not_run/meu_app: CXX_EXECUTABLE_LINKER__meu_app_Debug runner/CMakeFiles/meu_app.dir/main.cc.o runner/CMakeFiles/meu_app.dir/my_application.cc.o runner/CMakeFiles/meu_app.dir/__/flutter/generated_plugin_registrant.cc.o | plugins/url_launcher_linux/liburl_launcher_linux_plugin.so /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so /usr/lib/libgtk-3.so /usr/lib/libgdk-3.so /usr/lib/libz.so /usr/lib/libpangocairo-1.0.so /usr/lib/libcairo-gobject.so /usr/lib/libgdk_pixbuf-2.0.so /usr/lib/libatk-1.0.so /usr/lib/libpango-1.0.so /usr/lib/libcairo.so /usr/lib/libharfbuzz.so /usr/lib/libgio-2.0.so /usr/lib/libgobject-2.0.so /usr/lib/libglib-2.0.so || flutter/flutter_assemble plugins/url_launcher_linux/liburl_launcher_linux_plugin.so
   CONFIG = Debug
   DEP_FILE = runner/CMakeFiles/meu_app.dir/link.d
   FLAGS = -g
   LINK_FLAGS = -Xlinker --dependency-file=runner/CMakeFiles/meu_app.dir/link.d
-  LINK_LIBRARIES = -Wl,-rpath,/home/maria/meu_app/linux/flutter/ephemeral:  /home/maria/meu_app/linux/flutter/ephemeral/libflutter_linux_gtk.so  /usr/lib/libgtk-3.so  /usr/lib/libgdk-3.so  /usr/lib/libz.so  /usr/lib/libpangocairo-1.0.so  /usr/lib/libcairo-gobject.so  /usr/lib/libgdk_pixbuf-2.0.so  /usr/lib/libatk-1.0.so  /usr/lib/libpango-1.0.so  /usr/lib/libcairo.so  /usr/lib/libharfbuzz.so  /usr/lib/libgio-2.0.so  /usr/lib/libgobject-2.0.so  /usr/lib/libglib-2.0.so
+  LINK_LIBRARIES = -Wl,-rpath,/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux:/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral:  plugins/url_launcher_linux/liburl_launcher_linux_plugin.so  /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so  /usr/lib/libgtk-3.so  /usr/lib/libgdk-3.so  /usr/lib/libz.so  /usr/lib/libpangocairo-1.0.so  /usr/lib/libcairo-gobject.so  /usr/lib/libgdk_pixbuf-2.0.so  /usr/lib/libatk-1.0.so  /usr/lib/libpango-1.0.so  /usr/lib/libcairo.so  /usr/lib/libharfbuzz.so  /usr/lib/libgio-2.0.so  /usr/lib/libgobject-2.0.so  /usr/lib/libglib-2.0.so
   OBJECT_DIR = runner/CMakeFiles/meu_app.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -264,7 +264,7 @@ build intermediates_do_not_run/meu_app: CXX_EXECUTABLE_LINKER__meu_app_Debug run
 # Utility command for edit_cache
 
 build runner/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/runner && /usr/bin/ccmake -S/home/maria/meu_app/linux -B/home/maria/meu_app/build/linux/x64/debug
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner && /usr/bin/ccmake -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
   DESC = Running CMake cache editor...
   pool = console
   restat = 1
@@ -276,7 +276,7 @@ build runner/edit_cache: phony runner/CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build runner/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/runner && /usr/bin/cmake --regenerate-during-build -S/home/maria/meu_app/linux -B/home/maria/meu_app/build/linux/x64/debug
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner && /usr/bin/cmake --regenerate-during-build -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -294,7 +294,7 @@ build runner/list_install_components: phony
 # Utility command for install
 
 build runner/CMakeFiles/install.util: CUSTOM_COMMAND runner/all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/runner && /usr/bin/cmake -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner && /usr/bin/cmake -P cmake_install.cmake
   DESC = Install the project...
   pool = console
   restat = 1
@@ -306,7 +306,7 @@ build runner/install: phony runner/CMakeFiles/install.util
 # Utility command for install/local
 
 build runner/CMakeFiles/install/local.util: CUSTOM_COMMAND runner/all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/runner && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
   DESC = Installing only the local directory...
   pool = console
   restat = 1
@@ -318,7 +318,7 @@ build runner/install/local: phony runner/CMakeFiles/install/local.util
 # Utility command for install/strip
 
 build runner/CMakeFiles/install/strip.util: CUSTOM_COMMAND runner/all
-  COMMAND = cd /home/maria/meu_app/build/linux/x64/debug/runner && /usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner && /usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
   DESC = Installing the project stripped...
   pool = console
   restat = 1
@@ -326,11 +326,135 @@ build runner/CMakeFiles/install/strip.util: CUSTOM_COMMAND runner/all
 build runner/install/strip: phony runner/CMakeFiles/install/strip.util
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/maria/RangoLegal/lddm-main/linux/flutter/generated_plugins.cmake
+# =============================================================================
+
+# =============================================================================
+# Object build statements for SHARED_LIBRARY target url_launcher_linux_plugin
+
+
+#############################################
+# Order-only phony target for url_launcher_linux_plugin
+
+build cmake_object_order_depends_target_url_launcher_linux_plugin: phony || flutter/flutter_assemble
+
+build plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/messages.g.cc.o: CXX_COMPILER__url_launcher_linux_plugin_unscanned_Debug /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux/linux/messages.g.cc || cmake_object_order_depends_target_url_launcher_linux_plugin
+  CONFIG = Debug
+  DEFINES = -DFLUTTER_PLUGIN_IMPL -Durl_launcher_linux_plugin_EXPORTS
+  DEP_FILE = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/messages.g.cc.o.d
+  FLAGS = -g -fPIC -fvisibility=hidden -Wall -Werror -pthread
+  INCLUDES = -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
+  OBJECT_DIR = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir
+  OBJECT_FILE_DIR = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir
+
+build plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/url_launcher_plugin.cc.o: CXX_COMPILER__url_launcher_linux_plugin_unscanned_Debug /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux/linux/url_launcher_plugin.cc || cmake_object_order_depends_target_url_launcher_linux_plugin
+  CONFIG = Debug
+  DEFINES = -DFLUTTER_PLUGIN_IMPL -Durl_launcher_linux_plugin_EXPORTS
+  DEP_FILE = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/url_launcher_plugin.cc.o.d
+  FLAGS = -g -fPIC -fvisibility=hidden -Wall -Werror -pthread
+  INCLUDES = -I/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral -isystem /usr/include/gtk-3.0 -isystem /usr/include/pango-1.0 -isystem /usr/include/cloudproviders -isystem /usr/include/cairo -isystem /usr/include/gdk-pixbuf-2.0 -isystem /usr/include/at-spi2-atk/2.0 -isystem /usr/include/at-spi-2.0 -isystem /usr/include/atk-1.0 -isystem /usr/include/dbus-1.0 -isystem /usr/lib/dbus-1.0/include -isystem /usr/include/fribidi -isystem /usr/include/pixman-1 -isystem /usr/include/harfbuzz -isystem /usr/include/freetype2 -isystem /usr/include/libpng16 -isystem /usr/include/gio-unix-2.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/glib-2.0/include -isystem /usr/include/libmount -isystem /usr/include/blkid -isystem /usr/include/sysprof-6
+  OBJECT_DIR = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir
+  OBJECT_FILE_DIR = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir
+
+
+# =============================================================================
+# Link build statements for SHARED_LIBRARY target url_launcher_linux_plugin
+
+
+#############################################
+# Link the shared library plugins/url_launcher_linux/liburl_launcher_linux_plugin.so
+
+build plugins/url_launcher_linux/liburl_launcher_linux_plugin.so: CXX_SHARED_LIBRARY_LINKER__url_launcher_linux_plugin_Debug plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/messages.g.cc.o plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/url_launcher_plugin.cc.o | /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so /usr/lib/libgtk-3.so /usr/lib/libgdk-3.so /usr/lib/libz.so /usr/lib/libpangocairo-1.0.so /usr/lib/libcairo-gobject.so /usr/lib/libgdk_pixbuf-2.0.so /usr/lib/libatk-1.0.so /usr/lib/libpango-1.0.so /usr/lib/libcairo.so /usr/lib/libharfbuzz.so /usr/lib/libgio-2.0.so /usr/lib/libgobject-2.0.so /usr/lib/libglib-2.0.so || flutter/flutter_assemble
+  CONFIG = Debug
+  DEP_FILE = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/link.d
+  LANGUAGE_COMPILE_FLAGS = -g
+  LINK_FLAGS = -Xlinker --dependency-file=plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir/link.d
+  LINK_LIBRARIES = -Wl,-rpath,/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral  /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so  /usr/lib/libgtk-3.so  /usr/lib/libgdk-3.so  /usr/lib/libz.so  /usr/lib/libpangocairo-1.0.so  /usr/lib/libcairo-gobject.so  /usr/lib/libgdk_pixbuf-2.0.so  /usr/lib/libatk-1.0.so  /usr/lib/libpango-1.0.so  /usr/lib/libcairo.so  /usr/lib/libharfbuzz.so  /usr/lib/libgio-2.0.so  /usr/lib/libgobject-2.0.so  /usr/lib/libglib-2.0.so
+  OBJECT_DIR = plugins/url_launcher_linux/CMakeFiles/url_launcher_linux_plugin.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  SONAME = liburl_launcher_linux_plugin.so
+  SONAME_FLAG = -Wl,-soname,
+  TARGET_FILE = plugins/url_launcher_linux/liburl_launcher_linux_plugin.so
+  TARGET_PDB = url_launcher_linux_plugin.so.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build plugins/url_launcher_linux/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux && /usr/bin/ccmake -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build plugins/url_launcher_linux/edit_cache: phony plugins/url_launcher_linux/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build plugins/url_launcher_linux/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux && /usr/bin/cmake --regenerate-during-build -S/home/maria/RangoLegal/lddm-main/linux -B/home/maria/RangoLegal/lddm-main/build/linux/x64/debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build plugins/url_launcher_linux/rebuild_cache: phony plugins/url_launcher_linux/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build plugins/url_launcher_linux/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build plugins/url_launcher_linux/CMakeFiles/install.util: CUSTOM_COMMAND plugins/url_launcher_linux/all
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux && /usr/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build plugins/url_launcher_linux/install: phony plugins/url_launcher_linux/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build plugins/url_launcher_linux/CMakeFiles/install/local.util: CUSTOM_COMMAND plugins/url_launcher_linux/all
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux && /usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build plugins/url_launcher_linux/install/local: phony plugins/url_launcher_linux/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build plugins/url_launcher_linux/CMakeFiles/install/strip.util: CUSTOM_COMMAND plugins/url_launcher_linux/all
+  COMMAND = cd /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux && /usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build plugins/url_launcher_linux/install/strip: phony plugins/url_launcher_linux/CMakeFiles/install/strip.util
+
+# =============================================================================
 # Target aliases.
 
 build flutter_assemble: phony flutter/flutter_assemble
 
+build liburl_launcher_linux_plugin.so: phony plugins/url_launcher_linux/liburl_launcher_linux_plugin.so
+
 build meu_app: phony intermediates_do_not_run/meu_app
+
+build url_launcher_linux_plugin: phony plugins/url_launcher_linux/liburl_launcher_linux_plugin.so
 
 # =============================================================================
 # Folder targets.
@@ -338,21 +462,28 @@ build meu_app: phony intermediates_do_not_run/meu_app
 # =============================================================================
 
 #############################################
-# Folder: /home/maria/meu_app/build/linux/x64/debug
+# Folder: /home/maria/RangoLegal/lddm-main/build/linux/x64/debug
 
-build all: phony flutter/all runner/all
+build all: phony flutter/all runner/all plugins/url_launcher_linux/all
 
 # =============================================================================
 
 #############################################
-# Folder: /home/maria/meu_app/build/linux/x64/debug/flutter
+# Folder: /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter
 
 build flutter/all: phony
 
 # =============================================================================
 
 #############################################
-# Folder: /home/maria/meu_app/build/linux/x64/debug/runner
+# Folder: /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux
+
+build plugins/url_launcher_linux/all: phony plugins/url_launcher_linux/liburl_launcher_linux_plugin.so
+
+# =============================================================================
+
+#############################################
+# Folder: /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner
 
 build runner/all: phony intermediates_do_not_run/meu_app
 
@@ -363,14 +494,14 @@ build runner/all: phony intermediates_do_not_run/meu_app
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja /home/maria/meu_app/build/linux/x64/debug/cmake_install.cmake /home/maria/meu_app/build/linux/x64/debug/flutter/cmake_install.cmake /home/maria/meu_app/build/linux/x64/debug/runner/cmake_install.cmake: RERUN_CMAKE | /home/maria/meu_app/linux/CMakeLists.txt /home/maria/meu_app/linux/flutter/CMakeLists.txt /home/maria/meu_app/linux/flutter/ephemeral/generated_config.cmake /home/maria/meu_app/linux/flutter/generated_plugins.cmake /home/maria/meu_app/linux/runner/CMakeLists.txt /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake/Modules/FindPackageMessage.cmake /usr/share/cmake/Modules/FindPkgConfig.cmake /usr/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake/Modules/Linker/GNU-CXX.cmake /usr/share/cmake/Modules/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.0.3-dirty/CMakeCXXCompiler.cmake CMakeFiles/4.0.3-dirty/CMakeSystem.cmake
+build build.ninja /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/cmake_install.cmake /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter/cmake_install.cmake /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner/cmake_install.cmake /home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux/cmake_install.cmake: RERUN_CMAKE | /home/maria/RangoLegal/lddm-main/linux/CMakeLists.txt /home/maria/RangoLegal/lddm-main/linux/flutter/CMakeLists.txt /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux/linux/CMakeLists.txt /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/generated_config.cmake /home/maria/RangoLegal/lddm-main/linux/flutter/generated_plugins.cmake /home/maria/RangoLegal/lddm-main/linux/runner/CMakeLists.txt /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake/Modules/FindPackageMessage.cmake /usr/share/cmake/Modules/FindPkgConfig.cmake /usr/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake/Modules/Linker/GNU-CXX.cmake /usr/share/cmake/Modules/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.0.3-dirty/CMakeCXXCompiler.cmake CMakeFiles/4.0.3-dirty/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /home/maria/meu_app/linux/CMakeLists.txt /home/maria/meu_app/linux/flutter/CMakeLists.txt /home/maria/meu_app/linux/flutter/ephemeral/generated_config.cmake /home/maria/meu_app/linux/flutter/generated_plugins.cmake /home/maria/meu_app/linux/runner/CMakeLists.txt /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake/Modules/FindPackageMessage.cmake /usr/share/cmake/Modules/FindPkgConfig.cmake /usr/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake/Modules/Linker/GNU-CXX.cmake /usr/share/cmake/Modules/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.0.3-dirty/CMakeCXXCompiler.cmake CMakeFiles/4.0.3-dirty/CMakeSystem.cmake: phony
+build /home/maria/RangoLegal/lddm-main/linux/CMakeLists.txt /home/maria/RangoLegal/lddm-main/linux/flutter/CMakeLists.txt /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/.plugin_symlinks/url_launcher_linux/linux/CMakeLists.txt /home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/generated_config.cmake /home/maria/RangoLegal/lddm-main/linux/flutter/generated_plugins.cmake /home/maria/RangoLegal/lddm-main/linux/runner/CMakeLists.txt /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake/Modules/FindPackageMessage.cmake /usr/share/cmake/Modules/FindPkgConfig.cmake /usr/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake/Modules/Linker/GNU-CXX.cmake /usr/share/cmake/Modules/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/GNU.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/4.0.3-dirty/CMakeCXXCompiler.cmake CMakeFiles/4.0.3-dirty/CMakeSystem.cmake: phony
 
 
 #############################################

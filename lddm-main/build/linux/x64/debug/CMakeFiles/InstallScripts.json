@@ -1,9 +1,10 @@
 {
 	"InstallScripts" : 
 	[
-		"/home/maria/meu_app/build/linux/x64/debug/cmake_install.cmake",
-		"/home/maria/meu_app/build/linux/x64/debug/flutter/cmake_install.cmake",
-		"/home/maria/meu_app/build/linux/x64/debug/runner/cmake_install.cmake"
+		"/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/cmake_install.cmake",
+		"/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter/cmake_install.cmake",
+		"/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner/cmake_install.cmake",
+		"/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

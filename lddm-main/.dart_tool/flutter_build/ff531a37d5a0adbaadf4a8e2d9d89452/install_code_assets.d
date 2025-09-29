@@ -1,1 +1,0 @@
- /home/maria/meu_app/.dart_tool/flutter_build/ff531a37d5a0adbaadf4a8e2d9d89452/native_assets.json: 

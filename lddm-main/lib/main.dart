@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+// 1. Cores personalizadas definidas em um só lugar
+const Color corAmareloClaro = Color(0xFFFFFDE7);
+const Color corAmareloPrincipal = Color(0xFFFBC02D);
 
 void main() {
   runApp(const MyApp());
@@ -7,582 +11,255 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'RangoLegal',
       theme: ThemeData(
-        primaryColor: Colors.yellow,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
-        scaffoldBackgroundColor: Colors.grey[100],
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.yellow,
-          foregroundColor: Colors.black,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.black, backgroundColor: Colors.yellow,
-          ),
-        ),
+        // 2. Tema moderno usando ColorScheme com a nova cor
+        colorScheme: ColorScheme.fromSeed(seedColor: corAmareloPrincipal),
+        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+        useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      debugShowCheckedModeBanner: false,
+      home: const HomePage(),
     );
   }
 }
 
-// Splash Screen
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
-    });
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.restaurant_menu, size: 80, color: Colors.yellow),
-            SizedBox(height: 20),
-            Text('Bem-vindo ao RangoLegal!', style: TextStyle(fontSize: 24)),
-          ],
-        ),
-      ),
-    );
-  }
+  State<HomePage> createState() => _HomePageState();
 }
 
-// Login/Cadastro
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login / Cadastro')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Tela de Login/Cadastro', style: TextStyle(fontSize: 20)),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const MainNavigation()),
-                );
-              },
-              child: const Text('Entrar'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Barra de navegação principal
-class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
-  @override
-  State<MainNavigation> createState() => _MainNavigationState();
-}
-
-class _MainNavigationState extends State<MainNavigation> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  final List<Widget> _screens = [
-    const RecipeListScreen(),
-    const ProfileScreen(),
-    const RecommendationScreen(),
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    TelaReceitas(),
+    PlaceholderScreen(texto: 'Tela de Perfil'),
+    PlaceholderScreen(texto: 'Tela de Recomendações'),
   ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('RangoLegal'),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text(
+          'RangoLegal',
+          style: GoogleFonts.pacifico(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: corAmareloPrincipal, // <-- COR ATUALIZADA
+          ),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const RecipeFormScreen()),
-              );
-            },
+            icon: Icon(
+              Icons.add,
+              color: corAmareloPrincipal, // <-- COR ATUALIZADA
+            ),
+            onPressed: () {},
           ),
         ],
       ),
-      body: _screens[_selectedIndex],
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Receitas'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Recomendação'),
-        ],
-        onTap: (index) => setState(() => _selectedIndex = index),
-      ),
-    );
-  }
-}
-
-// Receita
-class Recipe {
-  final String nome;
-  final String ingredientes;
-  final String modoPreparo;
-  final String categoria;
-  final String imagemUrl;
-
-  Recipe({
-    required this.nome,
-    required this.ingredientes,
-    required this.modoPreparo,
-    required this.categoria,
-    required this.imagemUrl,
-  });
-}
-
-// Lista de receitas adicionadas
-// TODO: Substituir por banco de dados futuramente
-List<Recipe> receitasAdicionadas = [];
-
-// Tela de Lista de Receitas 
-class RecipeListScreen extends StatelessWidget {
-  const RecipeListScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ListTile(
-          leading: const Icon(Icons.cake),
-          title: const Text('Bolo de Chocolate'),
-          subtitle: const Text('Sobremesa'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const RecipeDetailScreen()),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.local_pizza),
-          title: const Text('Pizza Margherita'),
-          subtitle: const Text('Massas'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const RecipeDetailScreen()),
-            );
-          },
-        ),
-        // Receitas adicionadas pelo usuário
-        ...receitasAdicionadas.map((receita) => ListTile(
-          leading: receita.imagemUrl.isNotEmpty
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    receita.imagemUrl,
-                    width: 48,
-                    height: 48,
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : const Icon(Icons.fastfood),
-          title: Text(receita.nome),
-          subtitle: Text(receita.categoria),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => RecipeDetailScreenCustom(recipe: receita),
-              ),
-            );
-          },
-        )),
-      ],
-    );
-  }
-}
-
-// Tela de Detalhes da Receita 
-class RecipeDetailScreenCustom extends StatelessWidget {
-  final Recipe recipe;
-  const RecipeDetailScreenCustom({required this.recipe, super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(recipe.nome)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            if (recipe.imagemUrl.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  recipe.imagemUrl,
-                  height: 180,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            const SizedBox(height: 16),
-            Text(recipe.nome, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            Text('Ingredientes:', style: const TextStyle(fontSize: 18)),
-            Text(recipe.ingredientes),
-            const SizedBox(height: 10),
-            Text('Modo de Preparo:', style: const TextStyle(fontSize: 18)),
-            Text(recipe.modoPreparo),
-            const SizedBox(height: 20),
-            Text('Categoria: ${recipe.categoria}'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Tela de Detalhes da Receita
-class RecipeDetailScreen extends StatelessWidget {
-  const RecipeDetailScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Detalhes da Receita')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('Nome da Receita', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            Text('Ingredientes:', style: TextStyle(fontSize: 18)),
-            Text('- Ingrediente 1\n- Ingrediente 2'),
-            SizedBox(height: 10),
-            Text('Modo de Preparo:', style: TextStyle(fontSize: 18)),
-            Text('1. Passo um\n2. Passo dois'),
-            SizedBox(height: 20),
-            Text('Categoria: Sobremesa'),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.edit),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const RecipeFormScreen()),
-          );
-        },
-      ),
-    );
-  }
-}
-
-// Tela de Cadastro do Perfil Nutricional 
-class ProfileFormScreen extends StatefulWidget {
-  const ProfileFormScreen({super.key});
-  @override
-  State<ProfileFormScreen> createState() => _ProfileFormScreenState();
-}
-
-class _ProfileFormScreenState extends State<ProfileFormScreen> {
-  // TODO: Substituir por banco de dados futuramente
-  final _nomeController = TextEditingController(text: 'João Silva');
-  final _sexoController = TextEditingController(text: 'Masculino');
-  final _idadeController = TextEditingController(text: '32');
-  final _pesoController = TextEditingController(text: '78');
-  final _alturaController = TextEditingController(text: '1,80');
-  final _atividadeController = TextEditingController(text: 'Moderado (3x/semana)');
-  final _objetivoController = TextEditingController(text: 'Ganho de massa muscular');
-  final _restricoesController = TextEditingController(text: 'Nenhuma');
-  final _preferenciasController = TextEditingController(text: 'Carnes magras, legumes, frutas');
-  final _historicoController = TextEditingController(text: 'Sem doenças crônicas');
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Cadastro do Perfil Nutricional')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            const Text('Formulário de Perfil Nutricional', style: TextStyle(fontSize: 20)),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _nomeController,
-              decoration: const InputDecoration(labelText: 'Nome'),
-            ),
-            TextField(
-              controller: _sexoController,
-              decoration: const InputDecoration(labelText: 'Sexo'),
-            ),
-            TextField(
-              controller: _idadeController,
-              decoration: const InputDecoration(labelText: 'Idade'),
-              keyboardType: TextInputType.number,
-            ),
-            TextField(
-              controller: _pesoController,
-              decoration: const InputDecoration(labelText: 'Peso (kg)'),
-              keyboardType: TextInputType.number,
-            ),
-            TextField(
-              controller: _alturaController,
-              decoration: const InputDecoration(labelText: 'Altura (m)'),
-              keyboardType: TextInputType.number,
-            ),
-            TextField(
-              controller: _atividadeController,
-              decoration: const InputDecoration(labelText: 'Nível de atividade física'),
-            ),
-            TextField(
-              controller: _objetivoController,
-              decoration: const InputDecoration(labelText: 'Objetivo'),
-            ),
-            TextField(
-              controller: _restricoesController,
-              decoration: const InputDecoration(labelText: 'Restrições alimentares'),
-            ),
-            TextField(
-              controller: _preferenciasController,
-              decoration: const InputDecoration(labelText: 'Preferências alimentares'),
-            ),
-            TextField(
-              controller: _historicoController,
-              decoration: const InputDecoration(labelText: 'Histórico de saúde'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Perfil salvo!')),
-                );
-                Navigator.pop(context);
-              },
-              child: const Text('Salvar'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Tela CRUD de Receita 
-class RecipeFormScreen extends StatefulWidget {
-  const RecipeFormScreen({super.key});
-  @override
-  State<RecipeFormScreen> createState() => _RecipeFormScreenState();
-}
-
-class _RecipeFormScreenState extends State<RecipeFormScreen> {
-  // TODO: Substituir por banco de dados futuramente
-  final _nomeController = TextEditingController();
-  final _ingredientesController = TextEditingController();
-  final _modoPreparoController = TextEditingController();
-  final _categoriaController = TextEditingController();
-  final _imagemController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Cadastrar/Editar Receita')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            const Text('Formulário de Receita', style: TextStyle(fontSize: 20)),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _nomeController,
-              decoration: const InputDecoration(labelText: 'Nome da Receita'),
-            ),
-            TextField(
-              controller: _ingredientesController,
-              decoration: const InputDecoration(labelText: 'Ingredientes (separe por vírgula)'),
-              maxLines: 2,
-            ),
-            TextField(
-              controller: _modoPreparoController,
-              decoration: const InputDecoration(labelText: 'Modo de Preparo'),
-              maxLines: 3,
-            ),
-            TextField(
-              controller: _categoriaController,
-              decoration: const InputDecoration(labelText: 'Categoria'),
-            ),
-            TextField(
-              controller: _imagemController,
-              decoration: const InputDecoration(labelText: 'URL da Imagem'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                final receita = Recipe(
-                  nome: _nomeController.text,
-                  ingredientes: _ingredientesController.text,
-                  modoPreparo: _modoPreparoController.text,
-                  categoria: _categoriaController.text,
-                  imagemUrl: _imagemController.text,
-                );
-                receitasAdicionadas.add(receita);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Receita adicionada!')),
-                );
-                Navigator.pop(context);
-              },
-              child: const Text('Salvar Receita'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Tela de Perfil Nutricional
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Perfil Nutricional', style: TextStyle(fontSize: 22)),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ProfileFormScreen()),
-              );
-            },
-            child: const Text('Editar Perfil'),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt),
+            label: 'Receitas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'Recomendação',
           ),
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: corAmareloPrincipal, // <-- COR ATUALIZADA
+        onTap: _onItemTapped,
       ),
     );
   }
 }
 
-// Tela de Recomendação da IA
-class RecommendationScreen extends StatefulWidget {
-  const RecommendationScreen({super.key});
-  @override
-  State<RecommendationScreen> createState() => _RecommendationScreenState();
-}
+class TelaReceitas extends StatelessWidget {
+  const TelaReceitas({super.key});
 
-class _RecommendationScreenState extends State<RecommendationScreen> {
- 
-  // TODO: Substituir por dados vindos do banco de dados ou IA futuramente
-  String recipeName = 'Salada Colorida';
-  String recipeImage =
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80';
-  List<String> ingredients = [
-    'Alface',
-    'Tomate',
-    'Cenoura',
-    'Pepino',
-    'Azeite',
-    'Sal'
+  final List<Map<String, dynamic>> receitas = const [
+    {
+      "nome": "Bolo de Chocolate",
+      "categoria": "Sobremesa",
+      "imagem": "assets/images/bolo.webp",
+      "ingredientes": [
+        "3 ovos", "1 xícara de açúcar", "2 xícaras de farinha de trigo",
+        "1 xícara de chocolate em pó", "1/2 xícara de óleo", "1 xícara de água quente",
+        "1 colher de sopa de fermento em pó"
+      ],
+      "modo_preparo": [
+        "Bata os ovos e o açúcar até obter um creme fofo.",
+        "Adicione o óleo e o chocolate em pó, misturando bem.",
+        "Intercale a adição da farinha de trigo e da água quente, mexendo até a massa ficar homogênea.",
+        "Por último, adicione o fermento em pó e misture delicadamente.",
+        "Despeje a massa em uma forma untada e enfarinhada.",
+        "Asse em forno preaquecido a 180°C por aproximadamente 40 minutos."
+      ]
+    },
+    {
+      "nome": "Pizza Margherita",
+      "categoria": "Massas",
+      "imagem": "assets/images/pizza.webp",
+      "ingredientes": [
+        "1 disco de massa de pizza", "1/2 xícara de molho de tomate", "150g de queijo muçarela ralado",
+        "Tomates cereja cortados ao meio", "Folhas de manjericão fresco a gosto", "Azeite de oliva a gosto"
+      ],
+      "modo_preparo": [
+        "Pré-aqueça o forno a 220°C.", "Espalhe o molho de tomate sobre o disco de pizza.",
+        "Cubra com o queijo muçarela.", "Distribua os tomates cereja sobre o queijo.",
+        "Leve ao forno por 10-15 minutos, ou até a massa dourar e o queijo derreter.",
+        "Retire do forno, regue com azeite e decore com as folhas de manjericão."
+      ]
+    },
   ];
-  String reason =
-      'A IA escolheu esta receita por ser leve, nutritiva e adequada ao seu perfil nutricional.';
-
-  void _requestNewRecipe() {
-   
-    // TODO: Substituir por lógica real/banco de dados
-    setState(() {
-      recipeName = 'Omelete de Legumes';
-      recipeImage =
-          'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80';
-      ingredients = ['Ovos', 'Cenoura', 'Abobrinha', 'Cebola', 'Sal', 'Azeite'];
-      reason =
-          'A IA selecionou esta receita por ser rica em proteínas e fácil de preparar.';
-    });
-  }
-
-  void _saveRecipe() {
-    // TODO: Salvar receita no banco de dados futuramente
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Receita salva no livro de receitas!')),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Card(
-          elevation: 4,
+    return ListView.builder(
+      itemCount: receitas.length,
+      itemBuilder: (context, index) {
+        final receita = receitas[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          elevation: 2,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: ListTile(
+            contentPadding: const EdgeInsets.all(12.0),
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundImage: AssetImage(receita['imagem']),
+              backgroundColor: Colors.grey[200],
+            ),
+            title: Text(
+              receita['nome']!,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(receita['categoria']!),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetalheReceitaScreen(receita: receita),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class DetalheReceitaScreen extends StatelessWidget {
+  final Map<String, dynamic> receita;
+
+  const DetalheReceitaScreen({super.key, required this.receita});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> ingredientes = receita['ingredientes'];
+    final List<String> modoPreparo = receita['modo_preparo'];
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        foregroundColor: Colors.black,
+        title: Text(receita['nome']),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  recipeImage,
-                  height: 160,
-                  width: 160,
+                borderRadius: BorderRadius.circular(12.0),
+                child: Image.asset(
+                  receita['imagem'],
+                  width: double.infinity,
+                  height: 250,
                   fit: BoxFit.cover,
                 ),
               ),
+              const SizedBox(height: 24),
+              Text(
+                'Ingredientes',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 16),
-              Text(recipeName,
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
-              const Text('Ingredientes:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: ingredients
-                      .map((ing) => Text('- $ing',
-                          style: const TextStyle(fontSize: 16)))
-                      .toList(),
+              for (String ingrediente in ingredientes)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_circle_outline, size: 18, color: corAmareloPrincipal), // <-- COR ATUALIZADA
+                      const SizedBox(width: 8),
+                      Expanded(child: Text(ingrediente)),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text('Motivo da escolha pela IA:',
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w500)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(reason, style: const TextStyle(fontSize: 15)),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: _requestNewRecipe,
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Solicitar nova receita'),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: _saveRecipe,
-                    icon: const Icon(Icons.bookmark),
-                    label: const Text('Salvar'),
-                  ),
-                ],
+              const SizedBox(height: 24),
+              const Divider(),
+              const SizedBox(height: 24),
+              Text(
+                'Modo de Preparo',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
+              for (int i = 0; i < modoPreparo.length; i++)
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: corAmareloClaro, // <-- COR ATUALIZADA
+                    child: Text('${i + 1}', style: const TextStyle(color: Colors.black87)),
+                  ),
+                  title: Text(modoPreparo[i]),
+                ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PlaceholderScreen extends StatelessWidget {
+  final String texto;
+  const PlaceholderScreen({super.key, required this.texto});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        texto,
+        style: Theme.of(context).textTheme.headlineSmall,
       ),
     );
   }
