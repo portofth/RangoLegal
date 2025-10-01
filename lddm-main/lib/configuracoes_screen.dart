@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'theme_provider.dart'; // Importa nosso gerenciador de tema
+import 'login_screen.dart';
 
 class ConfiguracoesScreen extends StatelessWidget {
   const ConfiguracoesScreen({super.key});
@@ -14,7 +15,9 @@ class ConfiguracoesScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirmar Ação'),
-          content: const Text('Você tem certeza que deseja apagar seu perfil nutricional? Esta ação não pode ser desfeita.'),
+          content: const Text(
+            'Você tem certeza que deseja apagar seu perfil nutricional? Esta ação não pode ser desfeita.',
+          ),
           actions: <Widget>[
             TextButton(
               child: const Text('Cancelar'),
@@ -40,8 +43,14 @@ class ConfiguracoesScreen extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     // Lista de chaves do perfil para remover
     final profileKeys = [
-      'nome', 'sexo', 'idade', 'peso', 'altura', 
-      'nivelAtividade', 'objetivo', 'restricoes'
+      'nome',
+      'sexo',
+      'idade',
+      'peso',
+      'altura',
+      'nivelAtividade',
+      'objetivo',
+      'restricoes',
     ];
     for (String key in profileKeys) {
       await prefs.remove(key);
@@ -94,9 +103,28 @@ class ConfiguracoesScreen extends StatelessWidget {
               // Seção de Gerenciamento de Dados
               _buildSectionTitle('Dados'),
               ListTile(
-                leading: const Icon(Icons.delete_forever_outlined, color: Colors.red),
-                title: const Text('Limpar Perfil Nutricional', style: TextStyle(color: Colors.red)),
+                leading: const Icon(
+                  Icons.delete_forever_outlined,
+                  color: Colors.red,
+                ),
+                title: const Text(
+                  'Limpar Perfil Nutricional',
+                  style: TextStyle(color: Colors.red),
+                ),
                 onTap: () => _showResetConfirmationDialog(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.exit_to_app, color: Colors.black),
+                title: const Text('Sair do Perfil'),
+                onTap: () {
+                  // Redireciona para a tela de login
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
+                },
               ),
               const Divider(),
 
@@ -115,7 +143,9 @@ class ConfiguracoesScreen extends StatelessWidget {
                 title: const Text('Enviar Feedback'),
                 onTap: () {
                   // TODO: Substitua pelo seu e-mail
-                  _launchURL('mailto:seuemail@exemplo.com?subject=Feedback sobre o RangoLegal');
+                  _launchURL(
+                    'mailto:seuemail@exemplo.com?subject=Feedback sobre o RangoLegal',
+                  );
                 },
               ),
               ListTile(
@@ -126,11 +156,14 @@ class ConfiguracoesScreen extends StatelessWidget {
                     context: context,
                     applicationName: 'RangoLegal',
                     applicationVersion: '1.0.0 - Beta',
-                    applicationLegalese: '© 2025 Seu Nome Aqui.\nTodos os direitos reservados.',
+                    applicationLegalese:
+                        '© 2025 RangoLegalLTD.\nTodos os direitos reservados.',
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(top: 15),
-                        child: Text('Um aplicativo para ajudar você a encontrar as melhores receitas para seus objetivos!'),
+                        child: Text(
+                          'Um aplicativo para ajudar você a encontrar as melhores receitas para seus objetivos!',
+                        ),
                       ),
                     ],
                   );
@@ -146,7 +179,12 @@ class ConfiguracoesScreen extends StatelessWidget {
   // Widget auxiliar para criar os títulos de seção
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0, left: 16.0, right: 16.0),
+      padding: const EdgeInsets.only(
+        top: 16.0,
+        bottom: 8.0,
+        left: 16.0,
+        right: 16.0,
+      ),
       child: Text(
         title.toUpperCase(),
         style: TextStyle(

@@ -8,6 +8,7 @@ import 'perfil_screen.dart';
 import 'recomendacao_screen.dart';
 import 'dados_receitas.dart';
 import 'configuracoes_screen.dart';
+import 'login_screen.dart'; // Tela de login
 
 // Cores personalizadas
 const Color corAmareloClaro = Color(0xFFFFFDE7);
@@ -32,22 +33,29 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'RangoLegal',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: corAmareloPrincipal, brightness: Brightness.light),
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: corAmareloPrincipal, brightness: Brightness.light),
             scaffoldBackgroundColor: const Color(0xFFF5F5F5),
             useMaterial3: true,
           ),
           darkTheme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: corAmareloPrincipal, brightness: Brightness.dark),
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: corAmareloPrincipal, brightness: Brightness.dark),
             useMaterial3: true,
           ),
           themeMode: themeProvider.themeMode,
           debugShowCheckedModeBanner: false,
-          home: const HomePage(),
+          // 🔹 Tela inicial é o Login
+          home: const LoginScreen(),
         );
       },
     );
   }
 }
+
+// =====================================================
+// ================== HomePage ========================
+// =====================================================
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -72,20 +80,19 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // NOVA FUNÇÃO PARA CONTROLAR A AÇÃO DO BOTÃO '+'
   void _handleFabPress() {
     switch (_selectedIndex) {
-      case 0: // Tela de Receitas
+      case 0:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Ação: Adicionar nova receita.')),
         );
         break;
-      case 1: // Tela de Perfil
+      case 1:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Ação: Criar novo perfil nutricional.')),
         );
         break;
-      case 2: // Tela de Recomendação
+      case 2:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Ação: Filtrar recomendações.')),
         );
@@ -124,10 +131,10 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      floatingActionButton: _selectedIndex == 3 // Se for a tela de Configurações...
-          ? null // ...esconde o botão.
-          : FloatingActionButton( // Caso contrário, mostra o botão
-              onPressed: _handleFabPress, // E atribui a nova função de ação
+      floatingActionButton: _selectedIndex == 3
+          ? null
+          : FloatingActionButton(
+              onPressed: _handleFabPress,
               backgroundColor: corAmareloPrincipal,
               shape: const CircleBorder(),
               child: const Icon(Icons.add, color: Colors.black),
@@ -139,11 +146,13 @@ class _HomePageState extends State<HomePage> {
           return Icon(
             iconList[index],
             size: 24,
-            color: isActive ? corAmareloPrincipal : (isDarkMode ? Colors.white70 : Colors.grey.shade600),
+            color: isActive
+                ? corAmareloPrincipal
+                : (isDarkMode ? Colors.white70 : Colors.grey.shade600),
           );
         },
         activeIndex: _selectedIndex,
-        gapLocation: _selectedIndex == 3 ? GapLocation.none : GapLocation.center, // Esconde o recorte se o botão sumir
+        gapLocation: _selectedIndex == 3 ? GapLocation.none : GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,
         onTap: _onItemTapped,
         backgroundColor: navBarBackgroundColor,
@@ -152,7 +161,10 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// O restante do código (TelaReceitas, DetalheReceitaScreen, etc.) não precisa de mudanças
+// =====================================================
+// ================== TelaReceitas ====================
+// =====================================================
+
 class TelaReceitas extends StatelessWidget {
   const TelaReceitas({super.key});
   @override
@@ -192,6 +204,10 @@ class TelaReceitas extends StatelessWidget {
   }
 }
 
+// =====================================================
+// =============== DetalheReceitaScreen ===============
+// =====================================================
+
 class DetalheReceitaScreen extends StatelessWidget {
   final Map<String, dynamic> receita;
   const DetalheReceitaScreen({super.key, required this.receita});
@@ -200,7 +216,8 @@ class DetalheReceitaScreen extends StatelessWidget {
     final List<String> ingredientes = receita['ingredientes'];
     final List<String> modoPreparo = receita['modo_preparo'];
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final appBarBackgroundColor = isDarkMode ? Theme.of(context).scaffoldBackgroundColor : Colors.white;
+    final appBarBackgroundColor =
+        isDarkMode ? Theme.of(context).scaffoldBackgroundColor : Colors.white;
 
     return Scaffold(
       appBar: AppBar(
@@ -227,7 +244,10 @@ class DetalheReceitaScreen extends StatelessWidget {
               const SizedBox(height: 24),
               Text(
                 'Ingredientes',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               for (String ingrediente in ingredientes)
@@ -235,7 +255,8 @@ class DetalheReceitaScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle_outline, size: 18, color: corAmareloPrincipal),
+                      const Icon(Icons.check_circle_outline,
+                          size: 18, color: corAmareloPrincipal),
                       const SizedBox(width: 8),
                       Expanded(child: Text(ingrediente)),
                     ],
@@ -246,14 +267,18 @@ class DetalheReceitaScreen extends StatelessWidget {
               const SizedBox(height: 24),
               Text(
                 'Modo de Preparo',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               for (int i = 0; i < modoPreparo.length; i++)
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: corAmareloClaro,
-                    child: Text('${i + 1}', style: const TextStyle(color: Colors.black87)),
+                    child: Text('${i + 1}',
+                        style: const TextStyle(color: Colors.black87)),
                   ),
                   title: Text(modoPreparo[i]),
                 ),
@@ -264,6 +289,10 @@ class DetalheReceitaScreen extends StatelessWidget {
     );
   }
 }
+
+// =====================================================
+// ================== PlaceholderScreen ================
+// =====================================================
 
 class PlaceholderScreen extends StatelessWidget {
   final String texto;
