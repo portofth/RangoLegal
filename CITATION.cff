@@ -1,0 +1,27 @@
+cff-version: 1.0.1
+message: "Please cite this software using these metadata."
+title: "Rango Legal - Gerenciamento e Recomendação de Receitas Culinárias"
+authors:
+  - family-names: "Martins"
+    given-names: "Maria Eduarda"
+  - family-names: "Theodoro"
+    given-names: "Fernando"
+  - family-names: "Evangelista"
+    given-names: "Mateus"
+  - family-names: "Patrick"
+    given-names: "Diogo"
+  - family-names: "Almeida"
+    given-names: "Welbert"
+  - family-names: "Jardim"
+    given-names: "Rafael"
+keywords:
+  - "gerenciamento de receitas"
+  - "recomendação de receitas"
+  - "perfil nutricional"
+  - "app culinário"
+  - "inteligência artificial"
+repository-code: "https://github.com/portofth/RangoLegal"
+license: "MIT"
+version: "1.0.0"
+date-released: "2025-10-31"
+
