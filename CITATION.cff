@@ -14,6 +14,11 @@ authors:
     given-names: "Welbert"
   - family-names: "Jardim"
     given-names: "Rafael"
+  - name-suffix: "Professor"
+    affiliation: "PUC Minas"
+    family-names: "Rivero"
+    given-names: "Ilo Amy Saldanha"
+
 keywords:
   - "gerenciamento de receitas"
   - "recomendação de receitas"
