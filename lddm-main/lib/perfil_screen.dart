@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meu_app/database_helper.dart';
+import 'package:meu_app/models/profile.dart';
 
 // Cores que definimos anteriormente para manter o padrão
 const Color corAmareloPrincipal = Color(0xFFFBC02D);
 
 class PerfilNutricionalScreen extends StatefulWidget {
-  const PerfilNutricionalScreen({super.key});
+  final Profile? profile;
+  
+  const PerfilNutricionalScreen({super.key, this.profile});
 
   @override
   State<PerfilNutricionalScreen> createState() => _PerfilNutricionalScreenState();
@@ -23,6 +27,7 @@ class _PerfilNutricionalScreenState extends State<PerfilNutricionalScreen> {
   final _restricoesController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  Profile? _existingProfile;
 
   @override
   void initState() {
@@ -32,30 +37,81 @@ class _PerfilNutricionalScreenState extends State<PerfilNutricionalScreen> {
 
   Future<void> _carregarDados() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _nomeController.text = prefs.getString('nome') ?? '';
-      _sexoController.text = prefs.getString('sexo') ?? '';
-      _idadeController.text = prefs.getString('idade') ?? '';
-      _pesoController.text = prefs.getString('peso') ?? '';
-      _alturaController.text = prefs.getString('altura') ?? '';
-      _nivelAtividadeController.text = prefs.getString('nivelAtividade') ?? '';
-      _objetivoController.text = prefs.getString('objetivo') ?? '';
-      _restricoesController.text = prefs.getString('restricoes') ?? '';
-    });
+    final userId = prefs.getInt('userId');
+    if (userId == null || userId == 0) return;
+
+    // Se um profile foi passado como parâmetro, usa esse
+    Profile? profile = widget.profile;
+    
+    // Senão, tenta carregar o primeiro perfil do usuário
+    if (profile == null) {
+      final db = DatabaseHelper();
+      profile = await db.getProfileByUserId(userId);
+    }
+
+    if (profile != null) {
+      if (!mounted) return;
+      final p = profile;
+      setState(() {
+        _existingProfile = p;
+        _nomeController.text = '${p.firstName} ${p.lastName}';
+        _sexoController.text = p.sex;
+        _idadeController.text = p.age.toString();
+        _pesoController.text = p.weight.toString();
+        _alturaController.text = p.height.toString();
+        _nivelAtividadeController.text = p.activityLevel;
+        _objetivoController.text = p.nutritionalGoal;
+        _restricoesController.text = p.restrictions;
+      });
+    } else {
+      // fallback: nenhum perfil salvo ainda
+    }
   }
 
   Future<void> _salvarDados() async {
     if (_formKey.currentState!.validate()) {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('nome', _nomeController.text);
-      await prefs.setString('sexo', _sexoController.text);
-      await prefs.setString('idade', _idadeController.text);
-      await prefs.setString('peso', _pesoController.text);
-      await prefs.setString('altura', _alturaController.text);
-      await prefs.setString('nivelAtividade', _nivelAtividadeController.text);
-      await prefs.setString('objetivo', _objetivoController.text);
-      await prefs.setString('restricoes', _restricoesController.text);
+      final userId = prefs.getInt('userId');
+      if (userId == null || userId == 0) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Erro: usuário não autenticado.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
 
+      // Tenta dividir nome em primeiro/último
+      final nomeCompleto = _nomeController.text.trim();
+      final parts = nomeCompleto.split(' ');
+      final firstName = parts.isNotEmpty ? parts.first : nomeCompleto;
+      final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+
+      final profile = Profile(
+        id: _existingProfile?.id,
+        firstName: firstName,
+        lastName: lastName,
+        preferences: '',
+        restrictions: _restricoesController.text.trim(),
+        activityLevel: _nivelAtividadeController.text.trim(),
+        nutritionalGoal: _objetivoController.text.trim(),
+        weight: double.tryParse(_pesoController.text.replaceAll(',', '.')) ?? 0.0,
+        height: double.tryParse(_alturaController.text.replaceAll(',', '.')) ?? 0.0,
+        age: int.tryParse(_idadeController.text) ?? 0,
+        sex: _sexoController.text.trim(),
+        userId: userId,
+      );
+
+      final db = DatabaseHelper();
+      if (_existingProfile == null) {
+        await db.insertProfile(profile);
+      } else {
+        await db.updateProfile(profile);
+      }
+
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Perfil salvo com sucesso!'),
@@ -108,9 +164,12 @@ class _PerfilNutricionalScreenState extends State<PerfilNutricionalScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro do Perfil Nutricional'),
-        backgroundColor: Colors.white,
+        backgroundColor: corAmareloPrincipal,
         elevation: 0,
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -141,19 +200,42 @@ class _PerfilNutricionalScreenState extends State<PerfilNutricionalScreen> {
               const SizedBox(height: 16),
               _buildTextField(controller: _restricoesController, label: 'Restrições alimentares', icon: Icons.no_food),
               const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: _salvarDados,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: corAmareloPrincipal,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Cancelar',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Salvar',
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _salvarDados,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: corAmareloPrincipal,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Salvar',
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'main.dart'; // Para navegar para HomePage
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meu_app/database_helper.dart';
+import 'package:meu_app/models/user.dart';
 
 const Color corAmareloPrincipal = Color(0xFFFBC02D);
 
@@ -17,19 +20,57 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() {
     if (_formKey.currentState!.validate()) {
-      // Após login válido, navega para o HomePage
+      _tryLogin();
+    }
+  }
+
+  Future<void> _tryLogin() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    final db = DatabaseHelper();
+    final user = await db.getUser(email, password);
+    if (user != null) {
+      // Salva o id do usuário em SharedPreferences para manter sessão simples
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('userId', user.id ?? 0);
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Usuário ou senha incorretos'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
 
   void _abrirCadastro() {
-    Navigator.push(
+    _openCadastroAndPrefill();
+  }
+
+  Future<void> _openCadastroAndPrefill() async {
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CadastroScreen()),
     );
+    if (result != null && result is Map<String, String>) {
+      // Prefill email and password returned from cadastro
+      _emailController.text = result['email'] ?? '';
+      _passwordController.text = result['password'] ?? '';
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cadastro realizado! Faça login.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
   }
 
   @override
@@ -131,13 +172,39 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
   void _cadastrar() {
     if (_formKey.currentState!.validate()) {
-      // Aqui você poderia salvar os dados do usuário
-      // Após cadastro, volta para o login
-      Navigator.pop(context);
+      _performRegister();
+    }
+  }
+
+  Future<void> _performRegister() async {
+    final nome = _nomeController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    // Tenta dividir nome em primeiro e último
+    final parts = nome.split(' ');
+    final firstName = parts.isNotEmpty ? parts.first : nome;
+    final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+
+    final user = User(
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    );
+
+    final db = DatabaseHelper();
+    final id = await db.insertUser(user);
+    if (id > 0) {
+      // Retorna as credenciais para a tela de login para preenchimento automático
+      if (!mounted) return;
+      Navigator.pop(context, {'email': email, 'password': password});
+    } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Cadastro realizado! Faça login agora."),
-          backgroundColor: Colors.green,
+          content: Text("Erro ao cadastrar usuário."),
+          backgroundColor: Colors.red,
         ),
       );
     }

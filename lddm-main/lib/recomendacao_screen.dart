@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'servico_recomendacao.dart'; // Importa nossa lógica
 import 'main.dart'; // Para acessar a tela de detalhes
+import 'package:meu_app/models/recipe.dart';
+
+const Color corAmareloPrincipal = Color(0xFFFBC02D);
 
 class RecomendacaoScreen extends StatefulWidget {
   const RecomendacaoScreen({super.key});
@@ -23,8 +26,11 @@ class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recomendações para Você'),
-        backgroundColor: Colors.white,
+        title: const Text(
+          'Recomendações para Você',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: corAmareloPrincipal,
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
@@ -57,15 +63,61 @@ class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
                   contentPadding: const EdgeInsets.all(12.0),
                   leading: CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage(receita['imagem']),
+                    backgroundColor: Colors.grey[200],
+                    child: receita['imagem'] != null
+                        ? ClipOval(
+                            child: Image.asset(
+                              receita['imagem'],
+                              fit: BoxFit.cover,
+                              width: 56,
+                              height: 56,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Text(
+                                  (receita['nome'] as String).isNotEmpty 
+                                    ? (receita['nome'] as String)[0].toUpperCase()
+                                    : '?',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : Text(
+                            (receita['nome'] as String).isNotEmpty 
+                              ? (receita['nome'] as String)[0].toUpperCase()
+                              : '?',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
                   ),
                   title: Text(receita['nome'], style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(receita['categoria']),
                   onTap: () {
+                    // Converte o mapa de receita para o modelo Recipe temporário
+                    final tempRecipe = Recipe(
+                      id: null,
+                      name: receita['nome'] ?? 'Receita',
+                      preparationMode: (receita['modo_preparo'] is List)
+                          ? (receita['modo_preparo'] as List).join('\n')
+                          : (receita['modo_preparo']?.toString() ?? ''),
+                      ingredients: (receita['ingredientes'] is List)
+                          ? (receita['ingredientes'] as List).join('\n')
+                          : (receita['ingredientes']?.toString() ?? ''),
+                      restrictions: receita['restricoes'] ?? '',
+                      imagePath: receita['imagem'],
+                      userId: 0,
+                    );
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetalheReceitaScreen(receita: receita),
+                        builder: (context) => DetalheReceitaScreen(receita: tempRecipe),
                       ),
                     );
                   },

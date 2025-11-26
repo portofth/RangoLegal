@@ -1,8 +1,8 @@
-# Install script for directory: /home/maria/RangoLegal/lddm-main/linux
+# Install script for directory: /home/welbertalmeida/RangoLegal/lddm-main/linux
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle")
+  set(CMAKE_INSTALL_PREFIX "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -29,7 +29,7 @@ endif()
 
 # Install shared libraries without execute permission?
 if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "0")
+  set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
 # Is this installation the result of a crosscompile?
@@ -37,138 +37,121 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
-# Set path to fallback-tool for dependency-resolution.
-if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/usr/bin/objdump")
-endif()
-
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   
-  file(REMOVE_RECURSE "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/")
+  file(REMOVE_RECURSE "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/")
   
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
+  if(EXISTS "$ENV{DESTDIR}/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app"
+         FILE "$ENV{DESTDIR}/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app"
          RPATH "$ORIGIN/lib")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
+   "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle" TYPE EXECUTABLE FILES "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/intermediates_do_not_run/meu_app")
-  if(EXISTS "$ENV{DESTDIR}/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
+file(INSTALL DESTINATION "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle" TYPE EXECUTABLE FILES "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/intermediates_do_not_run/meu_app")
+  if(EXISTS "$ENV{DESTDIR}/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app"
-         OLD_RPATH "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux:/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral:"
+         FILE "$ENV{DESTDIR}/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app"
+         OLD_RPATH "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux:/home/welbertalmeida/RangoLegal/lddm-main/linux/flutter/ephemeral:"
          NEW_RPATH "$ORIGIN/lib")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
+      execute_process(COMMAND "/snap/flutter/current/usr/bin/strip" "$ENV{DESTDIR}/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/meu_app")
     endif()
   endif()
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/icudtl.dat")
+   "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/icudtl.dat")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data" TYPE FILE FILES "/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/icudtl.dat")
+file(INSTALL DESTINATION "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data" TYPE FILE FILES "/home/welbertalmeida/RangoLegal/lddm-main/linux/flutter/ephemeral/icudtl.dat")
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib/libflutter_linux_gtk.so")
+   "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib/libflutter_linux_gtk.so")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib" TYPE FILE FILES "/home/maria/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so")
+file(INSTALL DESTINATION "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib" TYPE FILE FILES "/home/welbertalmeida/RangoLegal/lddm-main/linux/flutter/ephemeral/libflutter_linux_gtk.so")
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib/liburl_launcher_linux_plugin.so")
+   "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib/liburl_launcher_linux_plugin.so")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib" TYPE FILE FILES "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux/liburl_launcher_linux_plugin.so")
+file(INSTALL DESTINATION "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib" TYPE FILE FILES "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux/liburl_launcher_linux_plugin.so")
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib/")
+   "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib/")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib" TYPE DIRECTORY FILES "/home/maria/RangoLegal/lddm-main/build/native_assets/linux/")
+file(INSTALL DESTINATION "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/lib" TYPE DIRECTORY FILES "/home/welbertalmeida/RangoLegal/lddm-main/build/native_assets/linux/")
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   
-  file(REMOVE_RECURSE "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets")
+  file(REMOVE_RECURSE "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets")
   
 endif()
 
-if(CMAKE_INSTALL_COMPONENT STREQUAL "Runtime" OR NOT CMAKE_INSTALL_COMPONENT)
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets")
+   "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data/flutter_assets")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data" TYPE DIRECTORY FILES "/home/maria/RangoLegal/lddm-main/build//flutter_assets")
+file(INSTALL DESTINATION "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/bundle/data" TYPE DIRECTORY FILES "/home/welbertalmeida/RangoLegal/lddm-main/build//flutter_assets")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/flutter/cmake_install.cmake")
-  include("/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/runner/cmake_install.cmake")
-  include("/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux/cmake_install.cmake")
+  include("/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/flutter/cmake_install.cmake")
+  include("/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/runner/cmake_install.cmake")
+  include("/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/plugins/url_launcher_linux/cmake_install.cmake")
 
 endif()
 
-string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
-       "${CMAKE_INSTALL_MANIFEST_FILES}")
-if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/install_local_manifest.txt"
-     "${CMAKE_INSTALL_MANIFEST_CONTENT}")
-endif()
 if(CMAKE_INSTALL_COMPONENT)
-  if(CMAKE_INSTALL_COMPONENT MATCHES "^[a-zA-Z0-9_.+-]+$")
-    set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
-  else()
-    string(MD5 CMAKE_INST_COMP_HASH "${CMAKE_INSTALL_COMPONENT}")
-    set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INST_COMP_HASH}.txt")
-    unset(CMAKE_INST_COMP_HASH)
-  endif()
+  set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
 else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/maria/RangoLegal/lddm-main/build/linux/x64/debug/${CMAKE_INSTALL_MANIFEST}"
+string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
+       "${CMAKE_INSTALL_MANIFEST_FILES}")
+file(WRITE "/home/welbertalmeida/RangoLegal/lddm-main/build/linux/x64/debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
-endif()

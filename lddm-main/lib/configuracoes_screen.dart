@@ -4,15 +4,71 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'theme_provider.dart'; // Importa nosso gerenciador de tema
 import 'login_screen.dart';
+import 'database_helper.dart';
+import 'splash_screen.dart';
 
-class ConfiguracoesScreen extends StatelessWidget {
+class ConfiguracoesScreen extends StatefulWidget {
   const ConfiguracoesScreen({super.key});
+
+  @override
+  State<ConfiguracoesScreen> createState() => _ConfiguracoesScreenState();
+}
+
+class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
+  // Função para mostrar o diálogo de confirmação de exclusão de usuário
+  void _showDeleteUserDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Excluir Usuário'),
+          content: const Text(
+            'Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita e todos os seus dados serão perdidos.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Excluir', style: TextStyle(color: Colors.red)),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final userId = prefs.getInt('userId');
+                
+                if (userId != null) {
+                  // Deleta o usuário do banco
+                  await DatabaseHelper().deleteUser(userId);
+                }
+                
+                // Limpa dados do SharedPreferences
+                await prefs.remove('userId');
+                
+                if (!mounted) return;
+                Navigator.of(dialogContext).pop();
+                
+                // Volta para splash screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SplashScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   // Função para mostrar o diálogo de confirmação
   void _showResetConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('Confirmar Ação'),
           content: const Text(
@@ -22,14 +78,14 @@ class ConfiguracoesScreen extends StatelessWidget {
             TextButton(
               child: const Text('Cancelar'),
               onPressed: () {
-                Navigator.of(context).pop(); // Fecha o diálogo
+                Navigator.of(dialogContext).pop(); // Fecha o diálogo
               },
             ),
             TextButton(
               child: const Text('Apagar', style: TextStyle(color: Colors.red)),
               onPressed: () {
-                _resetProfile(context);
-                Navigator.of(context).pop(); // Fecha o diálogo
+                _resetProfile();
+                Navigator.of(dialogContext).pop(); // Fecha o diálogo
               },
             ),
           ],
@@ -39,7 +95,7 @@ class ConfiguracoesScreen extends StatelessWidget {
   }
 
   // Função para apagar os dados do perfil
-  void _resetProfile(BuildContext context) async {
+  void _resetProfile() async {
     final prefs = await SharedPreferences.getInstance();
     // Lista de chaves do perfil para remover
     final profileKeys = [
@@ -55,6 +111,7 @@ class ConfiguracoesScreen extends StatelessWidget {
     for (String key in profileKeys) {
       await prefs.remove(key);
     }
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Perfil nutricional apagado com sucesso!'),
@@ -108,10 +165,10 @@ class ConfiguracoesScreen extends StatelessWidget {
                   color: Colors.red,
                 ),
                 title: const Text(
-                  'Limpar Perfil Nutricional',
+                  'Excluir Usuário',
                   style: TextStyle(color: Colors.red),
                 ),
-                onTap: () => _showResetConfirmationDialog(context),
+                onTap: () => _showDeleteUserDialog(context),
               ),
               ListTile(
                 leading: const Icon(Icons.exit_to_app, color: Colors.black),
