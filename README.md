@@ -115,7 +115,7 @@ O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **per
 
 * **Frontend:** Flutter
 * **Backend:** Integração com banco de dados (Maria Eduarda Martins)
-* **IA:** Módulo de recomendação inteligente (Rafael Jardim)
+* **IA:** Módulo de recomendação inteligente (Rafael Jardim) (a ser implementado)
 * **Controle de Versão:** Git e GitHub
 * **Design:** UI/UX com foco em usabilidade (Mateus Evangelista)
 
@@ -126,7 +126,7 @@ O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **per
 1. O usuário faz **login** ou cria uma conta.
 2. Define seu **perfil nutricional** (restrições e preferências).
 3. Acessa a **lista de receitas** ou cadastra novas.
-4. Recebe **recomendações automáticas** via IA.
+4. Recebe **recomendações automáticas** via IA.(sera implementado sprint 4)
 5. Pode **editar, excluir ou favoritar** receitas.
 
 ---
@@ -153,9 +153,12 @@ O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **per
 ### 🚀 Sprint 3
 
 ✔ Banco de dados completo (Minimundo + DER + Esquema)
+
 ✔ Integração total entre Flutter e Banco de Dados
+
 ✔ CRUD funcional para Perfis e Receitas
-✔ Base sólida para o módulo de recomendação por IA (em implementação )
+
+
 
 ---
 
@@ -231,13 +234,6 @@ Baseado nas telas da Sprint:
 * **Excluir Perfil:** removido conforme o usuário logado.
 
 O sistema permite **vários perfis por usuário**, conforme descrito no minimundo.
-
----
-
-## 🤖 2.3. Integração com Recomendação (IA)
-
-* A IA utiliza **dados do perfil** + **características das receitas**. ( falta implementar)
-* As recomendações são atualizadas dinamicamente conforme o perfil do usuário.
 
 ---
 
