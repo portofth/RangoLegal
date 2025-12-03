@@ -115,7 +115,7 @@ O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **per
 
 * **Frontend:** Flutter
 * **Backend:** Integração com banco de dados (Maria Eduarda Martins)
-* **IA:** Módulo de recomendação inteligente (Rafael Jardim)
+* **IA:** Módulo de recomendação inteligente (Rafael Jardim) (a ser implementado)
 * **Controle de Versão:** Git e GitHub
 * **Design:** UI/UX com foco em usabilidade (Mateus Evangelista)
 
@@ -126,7 +126,7 @@ O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **per
 1. O usuário faz **login** ou cria uma conta.
 2. Define seu **perfil nutricional** (restrições e preferências).
 3. Acessa a **lista de receitas** ou cadastra novas.
-4. Recebe **recomendações automáticas** via IA.
+4. Recebe **recomendações automáticas** via IA.(sera implementado sprint 4)
 5. Pode **editar, excluir ou favoritar** receitas.
 
 ---
@@ -147,8 +147,105 @@ O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **per
 * Conexão entre as páginas (navegação funcional).
 * Ajuste de layout e usabilidade.
 * Preparação do módulo de IA e do CRUD de receitas.
-* Documentação e QA final.
+* Documentação e QA .
 
+
+### 🚀 Sprint 3
+
+✔ Banco de dados completo (Minimundo + DER + Esquema)
+
+✔ Integração total entre Flutter e Banco de Dados
+
+✔ CRUD funcional para Perfis e Receitas
+
+
+
+---
+
+# 🧱 1) Projeto do Banco de Dados ( Sprint 3)
+
+*(Exigência da Sprint)*
+
+A Sprint 3 consolidou o **modelo de dados completo**, responsável por armazenar usuários, perfis nutricionais e receitas.
+A seguir estão os artefatos que descrevem o banco:
+
+---
+
+## 📄 1.1. Minimundo
+
+Segundo o documento oficial da Sprint:
+
+O sistema permite:
+
+* Usuários cadastrados com **nome, sobrenome, email e senha**.
+* Cada usuário pode possuir **um ou mais perfis nutricionais**, contendo:
+
+  * idade, peso, altura, sexo, nível de atividade física,
+  * objetivo nutricional,
+  * restrições alimentares,
+  * preferências alimentares.
+* Cada perfil pode ter **múltiplas receitas personalizadas**, incluindo:
+
+  * nome da receita,
+  * ingredientes,
+  * modo de preparo,
+  * restrições alimentares específicas.
+
+### 📌 Estrutura da Tabela Usuário
+
+| Campo         | Tipo  |
+| ------------- | ----- |
+| id            | PK    |
+| primeiro_nome | texto |
+| sobrenome     | texto |
+| email         | texto |
+| senha         | texto |
+
+---
+
+# ⚙️ 2) Integração CRUD Completa no App
+
+*(Exigência da Sprint)*
+
+Nesta Sprint, o banco de dados foi integrado ao aplicativo Flutter, permitindo operações **Create, Read, Update e Delete**.
+
+---
+
+## 🔧 2.1. CRUD de Receitas
+
+Baseado nas telas da Sprint:
+
+* **Criar Receita:** formulário com nome, ingredientes, preparo e restrições.
+* **Listar Receitas:** exibição na tela inicial após login.
+* **Editar Receita:** alteração dos dados cadastrados.
+* **Excluir Receita:** ação disponível no menu da receita.
+
+Todas as operações realizam acesso direto ao banco seguindo o DER definido.
+
+---
+
+## 🔧 2.2. CRUD de Perfis Nutricionais
+
+Baseado nas telas da Sprint:
+
+* **Criar Perfil:** inclui idade, peso, altura, objetivo e outras informações.
+* **Listar Perfis:** tela dedicada para visualizar perfis já cadastrados.
+* **Editar Perfil:** atualização dos valores do perfil selecionado.
+* **Excluir Perfil:** removido conforme o usuário logado.
+
+O sistema permite **vários perfis por usuário**, conforme descrito no minimundo.
+
+---
+
+# 🎥 Demonstração em Aula
+
+A demonstração desta sprint envolverá:
+
+✔ Login do usuário
+✔ Criação do perfil nutricional
+✔ Adicionar nova receita
+✔ Editar e excluir receitas
+✔ Exibir listas e perfis cadastrados
 
 ---
 
