@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dados_receitas.dart'; // Importa nossa lista de receitas
 
@@ -51,6 +52,20 @@ class ServicoRecomendacao {
 
     // 3. Ordena a lista: as receitas com maior pontuação vêm primeiro
     receitasRecomendadas.sort((a, b) => b['pontuacao'].compareTo(a['pontuacao']));
+
+    // 4. Adiciona a receita IA gerada (se houver) no topo
+    final receitaIAJson = prefs.getString('ultima_receita_ia');
+    if (receitaIAJson != null) {
+      try {
+        final receitaIA = Map<String, dynamic>.from(
+          jsonDecode(receitaIAJson) as Map,
+        );
+        receitaIA['pontuacao'] = 999; // Coloca no topo
+        receitasRecomendadas.insert(0, receitaIA);
+      } catch (e) {
+        print('Erro ao carregar receita IA: $e');
+      }
+    }
 
     return receitasRecomendadas;
   }

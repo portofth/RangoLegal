@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'dart:io';
@@ -11,10 +12,12 @@ import 'perfil_list_screen.dart';
 import 'recomendacao_screen.dart';
 import 'configuracoes_screen.dart';
 import 'splash_screen.dart'; // Tela inicial
+import 'servico_ia_receita.dart'; // IA
 import 'package:meu_app/database_helper.dart';
 import 'package:meu_app/models/recipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'recipe_form.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Cores personalizadas
 const Color corAmareloClaro = Color(0xFFFFFDE7);
@@ -23,6 +26,7 @@ const Color corAmareloPrincipal = Color(0xFFFBC02D);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper().initializeHive();
+  await dotenv.load(fileName: ".env"); // Carrega as chaves
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
@@ -74,6 +78,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  bool _gerandoComIA = false;
 
   static const List<Widget> _widgetOptions = <Widget>[
     TelaReceitas(),
@@ -86,6 +91,53 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  Future<void> _gerarReceitaComIA() async {
+    if (_gerandoComIA) return;
+
+    setState(() => _gerandoComIA = true);
+
+    try {
+      final servicoIA = ServicoIAReceita();
+      final receitaIA = await servicoIA.gerarReceitaComIA();
+
+      if (receitaIA != null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Receita gerada com IA com sucesso!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        // Atualiza a tela de recomendações
+        setState(() {
+          _selectedIndex = 2; // Vai para aba de recomendações
+          _gerandoComIA = false;
+        });
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Erro ao gerar receita com IA'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        setState(() => _gerandoComIA = false);
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('❌ Erro: ${e.toString()}'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      setState(() => _gerandoComIA = false);
+    }
   }
 
   void _handleFabPress() {
@@ -105,9 +157,8 @@ class _HomePageState extends State<HomePage> {
         );
         break;
       case 2:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Ação: Recomendações.')),
-        );
+        // Gerar receita com IA
+        _gerarReceitaComIA();
         break;
       case 3:
         // Sem FAB em configurações
@@ -149,10 +200,22 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: _selectedIndex == 3
           ? null
           : FloatingActionButton(
-              onPressed: _handleFabPress,
+              onPressed: _gerandoComIA ? null : _handleFabPress,
               backgroundColor: corAmareloPrincipal,
               shape: const CircleBorder(),
-              child: const Icon(Icons.add, color: Colors.black),
+              heroTag: null,
+              child: _gerandoComIA && _selectedIndex == 2
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : (_selectedIndex == 2
+                      ? const Icon(Icons.auto_awesome, color: Colors.black)
+                      : const Icon(Icons.add, color: Colors.black)),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
@@ -433,8 +496,8 @@ class _DetalheReceitaScreenState extends State<DetalheReceitaScreen> {
           ),
         );
       }
-      // File images (Android/iOS)
-      else {
+      // File images (Android/iOS) - não suportado em web
+      else if (!kIsWeb) {
         imageWidget = ClipRRect(
           borderRadius: BorderRadius.circular(12.0),
           child: Image.file(
@@ -451,6 +514,35 @@ class _DetalheReceitaScreenState extends State<DetalheReceitaScreen> {
               );
             },
           ),
+        );
+      }
+      // URL de rede (para receitas IA da Spoonacular)
+      else if (receita.imagePath!.startsWith('http://') || receita.imagePath!.startsWith('https://')) {
+        imageWidget = ClipRRect(
+          borderRadius: BorderRadius.circular(12.0),
+          child: Image.network(
+            receita.imagePath!,
+            width: double.infinity,
+            height: 250,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                width: double.infinity,
+                height: 250,
+                color: Colors.grey[200],
+                child: const Icon(Icons.restaurant_menu, size: 80, color: Colors.grey),
+              );
+            },
+          ),
+        );
+      }
+      // Fallback para web sem URL
+      else {
+        imageWidget = Container(
+          width: double.infinity,
+          height: 250,
+          color: Colors.grey[200],
+          child: const Icon(Icons.restaurant_menu, size: 80, color: Colors.grey),
         );
       }
     } else {

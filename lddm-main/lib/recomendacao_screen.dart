@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'servico_recomendacao.dart'; // Importa nossa lógica
 import 'main.dart'; // Para acessar a tela de detalhes
 import 'package:meu_app/models/recipe.dart';
@@ -20,6 +21,82 @@ class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
     super.initState();
     // Inicia o processo de obter as recomendações
     _recomendacoes = ServicoRecomendacao().getRecomendacoes();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Recarrega as recomendações sempre que a tela aparecer
+    // Isso garante que novas receitas IA apareçam na lista
+    _recomendacoes = ServicoRecomendacao().getRecomendacoes();
+    setState(() {});
+  }
+
+  // Função para construir imagem da receita (suporta múltiplos tipos)
+  Widget _buildRecipeImage(Map<String, dynamic> receita) {
+    final imagemPath = receita['imagem'];
+    
+    if (imagemPath == null || imagemPath.isEmpty) {
+      return _buildFallbackAvatar(receita);
+    }
+
+    // Se for asset (começa com 'assets/')
+    if (imagemPath.contains('assets/')) {
+      return CircleAvatar(
+        radius: 30,
+        backgroundColor: Colors.grey[200],
+        backgroundImage: AssetImage(imagemPath),
+        onBackgroundImageError: (exception, stackTrace) {
+          // Fallback silencioso
+        },
+        child: _buildFallbackAvatar(receita),
+      );
+    }
+    // Se for URL de rede (http/https)
+    else if (imagemPath.startsWith('http://') || imagemPath.startsWith('https://')) {
+      return CircleAvatar(
+        radius: 30,
+        backgroundColor: Colors.grey[200],
+        backgroundImage: NetworkImage(
+          imagemPath,
+          headers: const {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+          },
+        ),
+        onBackgroundImageError: (exception, stackTrace) {
+          // Fallback silencioso
+        },
+        child: _buildFallbackAvatar(receita),
+      );
+    }
+    // Se for Base64 (web)
+    else if (imagemPath.startsWith('data:image/')) {
+      try {
+        final base64Data = imagemPath.split(',').last;
+        return CircleAvatar(
+          radius: 30,
+          backgroundColor: Colors.grey[200],
+          backgroundImage: MemoryImage(base64Decode(base64Data)),
+          child: _buildFallbackAvatar(receita),
+        );
+      } catch (e) {
+        return _buildFallbackAvatar(receita);
+      }
+    }
+    
+    return _buildFallbackAvatar(receita);
+  }
+
+  Widget _buildFallbackAvatar(Map<String, dynamic> receita) {
+    final nome = (receita['nome'] ?? '?') as String;
+    return Text(
+      nome.isNotEmpty ? nome[0].toUpperCase() : '?',
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+        color: Colors.grey,
+      ),
+    );
   }
 
   @override
@@ -61,41 +138,7 @@ class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(12.0),
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.grey[200],
-                    child: receita['imagem'] != null
-                        ? ClipOval(
-                            child: Image.asset(
-                              receita['imagem'],
-                              fit: BoxFit.cover,
-                              width: 56,
-                              height: 56,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Text(
-                                  (receita['nome'] as String).isNotEmpty 
-                                    ? (receita['nome'] as String)[0].toUpperCase()
-                                    : '?',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.grey,
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                        : Text(
-                            (receita['nome'] as String).isNotEmpty 
-                              ? (receita['nome'] as String)[0].toUpperCase()
-                              : '?',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                  ),
+                  leading: _buildRecipeImage(receita),
                   title: Text(receita['nome'], style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(receita['categoria']),
                   onTap: () {

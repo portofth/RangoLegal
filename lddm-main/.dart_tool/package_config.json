@@ -116,6 +116,12 @@
       "languageVersion": "3.8"
     },
     {
+      "name": "flutter_dotenv",
+      "rootUri": "file:///home/fernas/.pub-cache/hosted/pub.dev/flutter_dotenv-6.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///home/fernas/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0",
       "packageUri": "lib/",
