@@ -1,1 +1,0 @@
- /home/fernas/Documents/Codes/Puc/lddm/teste/RangoLegal/lddm-main/.dart_tool/flutter_build/36ac8e28d4817dc43c4e2452360d670b/native_assets.json: 

@@ -9,6 +9,7 @@ import 'package:meu_app/models/user.dart';
 import 'package:meu_app/models/profile.dart';
 import 'package:meu_app/models/recipe.dart';
 import 'package:meu_app/dados_receitas.dart';
+import 'package:meu_app/notification_service.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -273,10 +274,14 @@ class DatabaseHelper {
       final profileMap = profile.toMap();
       profileMap['id'] = _getNextProfileId();
       await _hiveProfilesBox!.add(profileMap);
+      // Notifica listeners que o perfil foi atualizado/inserido
+      NotificationService.instance.notify('profile_updated');
       return profileMap['id'] as int;
     } else {
       Database db = await database;
-      return await db.insert('Profile', profile.toMap());
+      final id = await db.insert('Profile', profile.toMap());
+      NotificationService.instance.notify('profile_updated');
+      return id;
     }
   }
 
@@ -338,17 +343,21 @@ class DatabaseHelper {
       }
       if (index >= 0) {
         await _hiveProfilesBox!.putAt(index, profile.toMap());
+        // Notifica listeners
+        NotificationService.instance.notify('profile_updated');
         return 1;
       }
       return 0;
     } else {
       Database db = await database;
-      return await db.update(
+      final rows = await db.update(
         'Profile',
         profile.toMap(),
         where: 'id = ?',
         whereArgs: [profile.id],
       );
+      if (rows > 0) NotificationService.instance.notify('profile_updated');
+      return rows;
     }
   }
 
@@ -358,17 +367,20 @@ class DatabaseHelper {
         final p = _hiveProfilesBox!.getAt(i);
         if (p?['id'] == id) {
           await _hiveProfilesBox!.deleteAt(i);
+          NotificationService.instance.notify('profile_updated');
           return 1;
         }
       }
       return 0;
     } else {
       Database db = await database;
-      return await db.delete(
+      final rows = await db.delete(
         'Profile',
         where: 'id = ?',
         whereArgs: [id],
       );
+      if (rows > 0) NotificationService.instance.notify('profile_updated');
+      return rows;
     }
   }
 
@@ -378,10 +390,14 @@ class DatabaseHelper {
       final recipeMap = recipe.toMap();
       recipeMap['id'] = _getNextRecipeId();
       await _hiveRecipesBox!.add(recipeMap);
+      // Notifica listeners que as receitas mudaram
+      NotificationService.instance.notify('recipes_db_updated');
       return recipeMap['id'] as int;
     } else {
       Database db = await database;
-      return await db.insert('Recipes', recipe.toMap());
+      final id = await db.insert('Recipes', recipe.toMap());
+      NotificationService.instance.notify('recipes_db_updated');
+      return id;
     }
   }
 
@@ -420,17 +436,20 @@ class DatabaseHelper {
       }
       if (index >= 0) {
         await _hiveRecipesBox!.putAt(index, recipe.toMap());
+        NotificationService.instance.notify('recipes_db_updated');
         return 1;
       }
       return 0;
     } else {
       Database db = await database;
-      return await db.update(
+      final rows = await db.update(
         'Recipes',
         recipe.toMap(),
         where: 'id = ?',
         whereArgs: [recipe.id],
       );
+      if (rows > 0) NotificationService.instance.notify('recipes_db_updated');
+      return rows;
     }
   }
 
@@ -440,17 +459,20 @@ class DatabaseHelper {
         final r = _hiveRecipesBox!.getAt(i);
         if (r?['id'] == id) {
           await _hiveRecipesBox!.deleteAt(i);
+          NotificationService.instance.notify('recipes_db_updated');
           return 1;
         }
       }
       return 0;
     } else {
       Database db = await database;
-      return await db.delete(
+      final rows = await db.delete(
         'Recipes',
         where: 'id = ?',
         whereArgs: [id],
       );
+      if (rows > 0) NotificationService.instance.notify('recipes_db_updated');
+      return rows;
     }
   }
 

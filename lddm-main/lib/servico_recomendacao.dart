@@ -1,72 +1,92 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dados_receitas.dart'; // Importa nossa lista de receitas
+import 'package:meu_app/notification_service.dart';
 
 class ServicoRecomendacao {
+  // Chave para armazenar lista de receitas IA geradas
+  static const String keyReceitasIA = 'receitas_ia_geradas';
+
   // Função principal que retorna a lista de receitas recomendadas
   Future<List<Map<String, dynamic>>> getRecomendacoes() async {
-    // 1. Carrega o perfil do usuário
     final prefs = await SharedPreferences.getInstance();
-    final objetivo = prefs.getString('objetivo')?.toLowerCase() ?? '';
-    final restricoes = prefs.getString('restricoes')?.toLowerCase() ?? '';
 
     List<Map<String, dynamic>> receitasRecomendadas = [];
 
-    // 2. Itera sobre todas as receitas disponíveis
-    for (var receita in todasAsReceitas) {
-      bool isApropriada = true;
-      int pontuacao = 0;
-
-      final ingredientes = (receita['ingredientes'] as List<String>).join(' ').toLowerCase();
-
-      // --- LÓGICA DE FILTRO (RESTRIÇÕES) ---
-      // Se tiver alguma restrição, verifica se a receita é válida
-      if (restricoes.contains('vegetariano') && (ingredientes.contains('frango') || ingredientes.contains('carne'))) {
-        isApropriada = false;
-      }
-      if (restricoes.contains('lactose') && (ingredientes.contains('queijo') || ingredientes.contains('leite'))) {
-        isApropriada = false;
-      }
-      if (restricoes.contains('glúten') && ingredientes.contains('trigo')) {
-        isApropriada = false;
-      }
-
-      // --- LÓGICA DE PONTUAÇÃO (OBJETIVO) ---
-      // Se a receita passou pelo filtro de restrições, damos pontos a ela
-      if (isApropriada) {
-        if (objetivo.contains('massa muscular')) {
-          if (ingredientes.contains('frango') || ingredientes.contains('ovo')) pontuacao += 10;
-          if (ingredientes.contains('lentilha')) pontuacao += 5;
-        }
-        if (objetivo.contains('perda de peso')) {
-          if (ingredientes.contains('salada') || ingredientes.contains('legumes')) pontuacao += 10;
-          if (ingredientes.contains('frango')) pontuacao += 5;
-          if (ingredientes.contains('açúcar') || ingredientes.contains('farinha')) pontuacao -= 10;
-        }
-        
-        // Adiciona a pontuação na receita e a coloca na lista de recomendadas
-        receita['pontuacao'] = pontuacao;
-        receitasRecomendadas.add(receita);
-      }
-    }
-
-    // 3. Ordena a lista: as receitas com maior pontuação vêm primeiro
-    receitasRecomendadas.sort((a, b) => b['pontuacao'].compareTo(a['pontuacao']));
-
-    // 4. Adiciona a receita IA gerada (se houver) no topo
-    final receitaIAJson = prefs.getString('ultima_receita_ia');
-    if (receitaIAJson != null) {
+    // 1. Carrega todas as receitas IA geradas (acumuladas)
+    final receitasIAJson = prefs.getString(keyReceitasIA);
+    if (receitasIAJson != null) {
       try {
-        final receitaIA = Map<String, dynamic>.from(
-          jsonDecode(receitaIAJson) as Map,
-        );
-        receitaIA['pontuacao'] = 999; // Coloca no topo
-        receitasRecomendadas.insert(0, receitaIA);
+        final List<dynamic> receitasList = jsonDecode(receitasIAJson);
+        for (var receitaJson in receitasList) {
+          final receita = Map<String, dynamic>.from(receitaJson as Map);
+          receita['pontuacao'] = 999; // Coloca todas as IA no topo
+          receitasRecomendadas.add(receita);
+        }
       } catch (e) {
-        print('Erro ao carregar receita IA: $e');
+        print('Erro ao carregar receitas IA: $e');
       }
     }
 
     return receitasRecomendadas;
+  }
+
+  // Adiciona uma nova receita gerada pela IA à lista
+  Future<void> adicionarReceitaIA(Map<String, dynamic> novaReceita) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // 1. Carrega as receitas existentes
+    List<Map<String, dynamic>> receitasExistentes = [];
+    final receitasIAJson = prefs.getString(keyReceitasIA);
+    
+    if (receitasIAJson != null) {
+      try {
+        final List<dynamic> receitasList = jsonDecode(receitasIAJson);
+        receitasExistentes = List<Map<String, dynamic>>.from(
+          receitasList.map((r) => Map<String, dynamic>.from(r as Map))
+        );
+      } catch (e) {
+        print('Erro ao carregar receitas existentes: $e');
+      }
+    }
+
+    // 2. Verifica duplicidade por nome (normalizado) e não adiciona se já existir
+    final normalize = (String s) {
+      var t = s.toLowerCase().trim();
+      t = t.replaceAll(RegExp(r'[^a-z0-9 ]'), '');
+      t = t.replaceAll(RegExp(r'\s+'), ' ');
+      return t;
+    };
+    final nomeNovo = (novaReceita['nome'] ?? novaReceita['name'] ?? '').toString();
+    final nomeNovoNorm = normalize(nomeNovo);
+    final exists = receitasExistentes.any((r) {
+      final n = (r['nome'] ?? r['name'] ?? '').toString();
+      return normalize(n) == nomeNovoNorm;
+    });
+    if (exists) {
+      print('⚠️ Receita IA duplicada não adicionada: $nomeNovo');
+      return;
+    }
+
+    // 3. Adiciona a nova receita no início da lista
+    receitasExistentes.insert(0, novaReceita);
+
+    // 3. Salva novamente (limit de 10 receitas para não ficar muito grande)
+    if (receitasExistentes.length > 10) {
+      receitasExistentes = receitasExistentes.sublist(0, 10);
+    }
+
+    await prefs.setString(keyReceitasIA, jsonEncode(receitasExistentes));
+    print('✅ Receita IA adicionada à lista (total: ${receitasExistentes.length})');
+    // Notifica a UI que a lista de receitas IA foi atualizada
+    try {
+      NotificationService.instance.notify('receitas_updated');
+    } catch (e) {}
+  }
+
+  // Limpa todas as receitas IA geradas
+  Future<void> limparReceitasIA() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(keyReceitasIA);
+    print('🗑️ Receitas IA limpas');
   }
 }

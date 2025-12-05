@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meu_app/models/profile.dart';
 import 'package:meu_app/database_helper.dart';
+import 'package:meu_app/servico_recomendacao.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
@@ -64,50 +65,21 @@ class ServicoIAReceita {
 
       print('⏳ Iniciando geração de receita com IA...');
 
-      // 3. Gera um termo de busca usando Gemini com base no perfil
-      print('1️⃣ Gerando termo de busca...');
-      final searchTerm = await _gerarTermoBuscaComGemini(profile);
-      print('   ✅ Termo: "$searchTerm"');
-
-      // 4. Busca uma receita na Spoonacular usando o termo
-      print('2️⃣ Buscando receita na Spoonacular...');
-      final receitaSpoonacular = await _buscarReceitaSpoonacular(searchTerm);
+  // 3. Tenta gerar receita com retry automático (passa userId para checagens de duplicidade)
+  final receitaFormatada = await _gerarReceitaComRetry(profile, userId: userId, maxTentativas: 3);
       
-      if (receitaSpoonacular == null) {
-        throw Exception('Nenhuma receita encontrada para: $searchTerm');
+      if (receitaFormatada == null) {
+        throw Exception('Não foi possível gerar receita após 3 tentativas');
       }
 
-      print('   ✅ Receita: ${receitaSpoonacular['title']}');
-
-      // 5. Obtém detalhes completos da receita
-      print('3️⃣ Obtendo detalhes da receita...');
-      final receitaDetalhes = await _obterDetalhesReceitaSpoonacular(
-        receitaSpoonacular['id'],
-      );
-
-      if (receitaDetalhes == null) {
-        throw Exception('Não foi possível obter os detalhes da receita');
-      }
-
-      print('   ✅ Detalhes obtidos');
-
-      // 6. Resume e traduz a receita usando Gemini
-      print('4️⃣ Traduzindo e formatando receita em português...');
-      final receitaFormatada = await _resumirETraduzirReceitaComGemini(
-        receitaDetalhes,
-      );
-
-      // 7. Salva a receita em SharedPreferences para exibição em recomendações
-      if (receitaFormatada != null) {
-        print('5️⃣ Salvando receita em recomendações...');
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(
-          'ultima_receita_ia',
-          jsonEncode(receitaFormatada),
-        );
-        print('   ✅ Receita salva em recomendações!');
-      }
-
+      // 4. Salva a receita em SharedPreferences para exibição em recomendações
+      print('5️⃣ Salvando receita em recomendações...');
+      
+      // Usa o ServicoRecomendacao para adicionar à lista de receitas IA
+      final servicoRecomendacao = ServicoRecomendacao();
+      await servicoRecomendacao.adicionarReceitaIA(receitaFormatada);
+      
+      print('   ✅ Receita salva em recomendações!');
       print('✅ Receita pronta!');
       return receitaFormatada;
     } catch (e) {
@@ -116,45 +88,150 @@ class ServicoIAReceita {
     }
   }
 
+  /// Gera receita com retry automático quando Spoonacular não encontra
+  Future<Map<String, dynamic>?> _gerarReceitaComRetry(
+    Profile profile, {
+    required int userId,
+    int maxTentativas = 3,
+  }) async {
+    // Prepara lista de nomes existentes (normalizados) para evitar duplicatas
+    final db = DatabaseHelper();
+    final servicoRecomendacao = ServicoRecomendacao();
+    List<String> existingNames = [];
+    try {
+      final userRecipes = await db.getRecipesByUserId(userId);
+      existingNames.addAll(userRecipes.map((r) => _normalize(r.name ?? '')));
+    } catch (e) {
+      print('⚠️ Não foi possível buscar receitas do usuário: $e');
+    }
+    try {
+      final iaList = await servicoRecomendacao.getRecomendacoes();
+      existingNames.addAll(iaList.map((r) => _normalize(r['nome'] ?? r['name'] ?? '')));
+    } catch (e) {
+      print('⚠️ Não foi possível buscar receitas IA existentes: $e');
+    }
+    // Remove duplicatas na lista local
+    existingNames = existingNames.toSet().toList();
+    for (int tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+      try {
+        print('🔄 Tentativa $tentativa/$maxTentativas...');
+
+  // 1. Gera um termo de busca usando Gemini com base no perfil e nas receitas já existentes
+  print('1️⃣ Gerando termo de busca...');
+  final searchTerm = await _gerarTermoBuscaComGemini(profile, existingRecipeNames: existingNames);
+        print('   ✅ Termo: "$searchTerm"');
+
+        // 2. Busca uma receita na Spoonacular usando o termo
+        print('2️⃣ Buscando receita na Spoonacular...');
+  final receitaSpoonacular = await _buscarReceitaSpoonacular(searchTerm, existingRecipeNames: existingNames);
+        
+        if (receitaSpoonacular == null) {
+          print('   ⚠️ Nenhuma receita encontrada para: $searchTerm');
+          if (tentativa < maxTentativas) {
+            print('   🔄 Tentando termo diferente...');
+            await Future.delayed(const Duration(milliseconds: 500));
+            continue;
+          }
+          return null;
+        }
+
+        print('   ✅ Receita: ${receitaSpoonacular['title']}');
+
+        // 3. Obtém detalhes completos da receita
+        print('3️⃣ Obtendo detalhes da receita...');
+        final receitaDetalhes = await _obterDetalhesReceitaSpoonacular(
+          receitaSpoonacular['id'],
+        );
+
+        if (receitaDetalhes == null) {
+          print('   ⚠️ Não foi possível obter detalhes');
+          if (tentativa < maxTentativas) {
+            print('   🔄 Tentando novamente...');
+            await Future.delayed(const Duration(milliseconds: 500));
+            continue;
+          }
+          return null;
+        }
+
+  print('   ✅ Detalhes obtidos');
+
+        // 4. Resume e traduz a receita usando Gemini
+        print('4️⃣ Traduzindo e formatando receita em português...');
+        final receitaFormatada = await _resumirETraduzirReceitaComGemini(
+          receitaDetalhes,
+        );
+
+        if (receitaFormatada == null) {
+          print('   ⚠️ Erro ao traduzir receita');
+          if (tentativa < maxTentativas) {
+            print('   🔄 Tentando novamente...');
+            await Future.delayed(const Duration(milliseconds: 500));
+            continue;
+          }
+          return null;
+        }
+
+        // ✅ Sucesso! Retorna a receita
+        return receitaFormatada;
+      } catch (e) {
+        print('   ❌ Erro na tentativa $tentativa: $e');
+        if (tentativa < maxTentativas) {
+          print('   🔄 Tentando novamente...');
+          await Future.delayed(const Duration(milliseconds: 500));
+        }
+      }
+    }
+
+    return null;
+  }
+
   /// Usa Gemini para gerar um termo de busca baseado no perfil
-  Future<String> _gerarTermoBuscaComGemini(Profile profile) async {
+  Future<String> _gerarTermoBuscaComGemini(Profile profile, {List<String>? existingRecipeNames}) async {
     try {
       // Monta strings formatadas do perfil
       final restricoes = profile.restrictions.isEmpty 
           ? 'Nenhuma' 
           : profile.restrictions;
       
-      final prompt = '''
-Você é um nutricionista. Baseado no perfil do usuário, sugira UM ÚNICO ingrediente ou tipo de prato em inglês para uma receita saudável.
+      final buffer = StringBuffer();
+      buffer.writeln('''Você é um nutricionista. Baseado no perfil do usuário, sugira UM ÚNICO ingrediente ou tipo de prato em inglês para uma receita saudável.''');
+      buffer.writeln();
+      buffer.writeln('PERFIL DO USUÁRIO:');
+      buffer.writeln('- Objetivo: ${profile.nutritionalGoal}');
+      buffer.writeln('- Restrições alimentares: $restricoes');
+      buffer.writeln('- Nível de atividade: ${profile.activityLevel}');
+      buffer.writeln('- Idade: ${profile.age}');
+      buffer.writeln();
+      buffer.writeln('REGRAS IMPORTANTES:');
+      buffer.writeln('1. Escolha receitas VARIADAS - não repita sempre "chicken", "salad" ou "soup"');
+      buffer.writeln('2. Considere o objetivo nutricional:');
+      buffer.writeln('   - Emagrecimento: prefira vegetais, proteínas magras, menos carboidratos');
+      buffer.writeln('   - Ganho muscular: prefira proteínas, carnes, ovos, leguminosas');
+      buffer.writeln('   - Manutenção: variedade equilibrada');
+      buffer.writeln('3. Respeite as restrições alimentares');
+      buffer.writeln('4. Escolha ingredientes ou pratos comuns que existam em bases de receitas');
+      buffer.writeln('5. Retorne APENAS UM termo em inglês, sem explicações');
+      buffer.writeln();
+      if (existingRecipeNames != null && existingRecipeNames.isNotEmpty) {
+        buffer.writeln('RECEITAS EXISTENTES (não sugira algo que produza o mesmo nome):');
+        for (var n in existingRecipeNames.take(20)) {
+          buffer.writeln('- ${n}');
+        }
+        buffer.writeln();
+      }
+      buffer.writeln('EXEMPLOS DE RESPOSTAS VÁLIDAS:');
+      buffer.writeln('- "grilled salmon"');
+      buffer.writeln('- "quinoa bowl"');
+      buffer.writeln('- "lentil curry"');
+      buffer.writeln('- "shrimp stir-fry"');
+      buffer.writeln('- "vegetable stew"');
+      buffer.writeln('- "tofu pad thai"');
+      buffer.writeln('- "baked cod"');
+      buffer.writeln('- "chickpea pasta"');
+      buffer.writeln();
+      buffer.writeln('Retorne APENAS o termo, nada mais.');
 
-PERFIL DO USUÁRIO:
-- Objetivo: ${profile.nutritionalGoal}
-- Restrições alimentares: $restricoes
-- Nível de atividade: ${profile.activityLevel}
-- Idade: ${profile.age}
-
-REGRAS IMPORTANTES:
-1. Escolha receitas VARIADAS - não repita sempre "chicken", "salad" ou "soup"
-2. Considere o objetivo nutricional:
-   - Emagrecimento: prefira vegetais, proteínas magras, menos carboidratos
-   - Ganho muscular: prefira proteínas, carnes, ovos, leguminosas
-   - Manutenção: variedade equilibrada
-3. Respeite as restrições alimentares
-4. Escolha ingredientes ou pratos comuns que existam em bases de receitas
-5. Retorne APENAS UM termo em inglês, sem explicações
-
-EXEMPLOS DE RESPOSTAS VÁLIDAS:
-- "grilled salmon"
-- "quinoa bowl"
-- "lentil curry"
-- "shrimp stir-fry"
-- "vegetable stew"
-- "tofu pad thai"
-- "baked cod"
-- "chickpea pasta"
-
-Retorne APENAS o termo, nada mais.
-''';
+  final prompt = buffer.toString();
 
       final url = Uri.parse(
         'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=$geminiApiKey',
@@ -176,7 +253,7 @@ Retorne APENAS o termo, nada mais.
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final searchTerm = data['candidates'][0]['content']['parts'][0]['text']
+    final searchTerm = data['candidates'][0]['content']['parts'][0]['text']
             .toString()
             .trim()
             .replaceAll('"', '')
@@ -197,19 +274,33 @@ Retorne APENAS o termo, nada mais.
   }
 
   /// Busca uma receita na Spoonacular usando um termo
-  Future<Map<String, dynamic>?> _buscarReceitaSpoonacular(String searchTerm) async {
+  Future<Map<String, dynamic>?> _buscarReceitaSpoonacular(String searchTerm, {List<String>? existingRecipeNames}) async {
     try {
+      // Pede mais resultados para poder filtrar duplicatas localmente
       final url = Uri.parse(
-        'https://api.spoonacular.com/recipes/complexSearch?apiKey=$spoonacularApiKey&query=$searchTerm&number=1&language=pt',
+        'https://api.spoonacular.com/recipes/complexSearch?apiKey=$spoonacularApiKey&query=$searchTerm&number=5&language=pt',
       );
 
       final response = await http.get(url).timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final results = data['results'] as List;
-        
+        final results = (data['results'] as List).cast<Map<String, dynamic>>();
         if (results.isNotEmpty) {
+          // Se houver nomes existentes, compare e retorne o primeiro que não esteja na lista
+          if (existingRecipeNames != null && existingRecipeNames.isNotEmpty) {
+            for (var r in results) {
+              final title = (r['title'] ?? r['name'] ?? '').toString();
+              final norm = _normalize(title);
+              if (!existingRecipeNames.contains(norm)) {
+                return r;
+              } else {
+                print('🔁 Ignorando receita duplicada encontrada: $title');
+              }
+            }
+            // Nenhuma não-duplicada encontrada
+            return null;
+          }
           return results.first;
         }
       } else {
@@ -288,7 +379,7 @@ Retorne JSON (sem markdown, sem blocos de código):
             }
           ]
         }),
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 20));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -318,6 +409,27 @@ Retorne JSON (sem markdown, sem blocos de código):
       print('❌ Erro ao resumir e traduzir: $e');
     }
     return null;
+  }
+
+  // Normaliza um título para comparação simples (remove acentos, pontuação e lower case)
+  String _normalize(String s) {
+    String t = s.toLowerCase().trim();
+    final replacements = {
+      'á': 'a', 'à': 'a', 'ã': 'a', 'â': 'a', 'ä': 'a',
+      'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+      'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
+      'ó': 'o', 'ò': 'o', 'õ': 'o', 'ô': 'o', 'ö': 'o',
+      'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
+      'ç': 'c', 'ñ': 'n'
+    };
+    replacements.forEach((k, v) {
+      t = t.replaceAll(k, v);
+    });
+    // remove caracteres não alfanuméricos exceto espaço
+    t = t.replaceAll(RegExp(r'[^a-z0-9 ]'), '');
+    // colapsa espaços
+    t = t.replaceAll(RegExp(r'\s+'), ' ');
+    return t;
   }
 }
 

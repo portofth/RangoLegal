@@ -1,1 +1,0 @@
- /home/welbertalmeida/RangoLegal/lddm-main/.dart_tool/flutter_build/fc084617bef077a728b79c68f3b61455/native_assets.json: 

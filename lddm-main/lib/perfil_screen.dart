@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meu_app/database_helper.dart';
 import 'package:meu_app/models/profile.dart';
+import 'package:meu_app/notification_service.dart';
 
 // Cores que definimos anteriormente para manter o padrão
 const Color corAmareloPrincipal = Color(0xFFFBC02D);
@@ -118,6 +119,10 @@ class _PerfilNutricionalScreenState extends State<PerfilNutricionalScreen> {
           backgroundColor: Colors.green,
         ),
       );
+      // Notifica outras telas que o perfil foi atualizado
+      try {
+        NotificationService.instance.notify('profile_updated');
+      } catch (e) {}
     }
   }
   

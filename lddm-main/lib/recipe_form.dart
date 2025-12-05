@@ -5,6 +5,7 @@ import 'package:meu_app/database_helper.dart';
 import 'package:meu_app/models/recipe.dart';
 import 'package:meu_app/image_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meu_app/notification_service.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class RecipeForm extends StatefulWidget {
@@ -99,6 +100,10 @@ class _RecipeFormState extends State<RecipeForm> {
     }
 
     if (!mounted) return;
+    // Notifica que o banco de receitas mudou
+    try {
+      NotificationService.instance.notify('recipes_db_updated');
+    } catch (e) {}
     Navigator.pop(context, true);
   }
 

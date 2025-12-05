@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:convert';
 import 'servico_recomendacao.dart'; // Importa nossa lógica
+import 'package:meu_app/notification_service.dart';
 import 'main.dart'; // Para acessar a tela de detalhes
 import 'package:meu_app/models/recipe.dart';
 
@@ -13,23 +15,59 @@ class RecomendacaoScreen extends StatefulWidget {
   State<RecomendacaoScreen> createState() => _RecomendacaoScreenState();
 }
 
-class _RecomendacaoScreenState extends State<RecomendacaoScreen> {
+class _RecomendacaoScreenState extends State<RecomendacaoScreen> with WidgetsBindingObserver {
   late Future<List<Map<String, dynamic>>> _recomendacoes;
+  late final StreamSubscription<String> _notifSub;
+  Timer? _reloadDebounce;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // Inicia o processo de obter as recomendações
+    _carregarRecomendacoes();
+    // Inscreve para eventos globais (perfil/receitas atualizadas)
+    _notifSub = NotificationService.instance.stream.listen((event) {
+      if (event == 'profile_updated' || event == 'receitas_updated' || event == 'recipes_db_updated') {
+        // Debounce reloads to avoid setState during build or spamming
+        _reloadDebounce?.cancel();
+        _reloadDebounce = Timer(const Duration(milliseconds: 200), () {
+          if (!mounted) return;
+          _carregarRecomendacoes();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _notifSub.cancel();
+    _reloadDebounce?.cancel();
+    super.dispose();
+  }
+
+  void _carregarRecomendacoes() {
     _recomendacoes = ServicoRecomendacao().getRecomendacoes();
+    // schedule setState after frame to be safe if currently building
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Quando a tela reaparece após navegar para outra, recarrega
+      _carregarRecomendacoes();
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Recarrega as recomendações sempre que a tela aparecer
-    // Isso garante que novas receitas IA apareçam na lista
-    _recomendacoes = ServicoRecomendacao().getRecomendacoes();
-    setState(() {});
+    _carregarRecomendacoes();
   }
 
   // Função para construir imagem da receita (suporta múltiplos tipos)
