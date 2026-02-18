@@ -1,19 +1,19 @@
 # 🍲 Rango Legal
 
-Aplicativo desenvolvido como parte das Sprints 1 e 2 do projeto **Rango Legal**, voltado para o gerenciamento e recomendação de receitas culinárias, com base no perfil nutricional do usuário.
+Aplicativo de gestão e recomendação de receitas desenvolvido na disciplina de Laboratório de Desenvolvimento para Dispositivos Móveis (2025/2). O projeto utiliza inteligência artificial para personalizar sugestões com base no perfil nutricional do usuário
 
 ---
 
 ## 👥 Equipe do Projeto
 
-| Nome                      | Função                                                    |
-| ------------------------- | --------------------------------------------------------- |
-| **Maria Eduarda Martins** | Backend (CRUD de receitas, integração com banco de dados) |
-| **Fernando Theodoro**     | Frontend (telas do app, UX)                               |
-| **Mateus Evangelista**    | Designer UI/UX                                            |
-| **Diogo Patrick**         | Scrum Master / Suporte                                    |
-| **Welbert Almeida**       | Documentação e QA                                         |
-| **Rafael Jardim**         | Inteligência Artificial                                   |
+| Nome                      | 
+| ------------------------- | 
+| **Maria Eduarda Martins** | 
+| **Fernando Theodoro**     |
+| **Mateus Evangelista**    | 
+| **Diogo Patrick**         | 
+| **Welbert Almeida**       |
+| **Rafael Jardim**         | 
 
 ---
 
@@ -24,7 +24,6 @@ O **Rango Legal** tem como propósito **organizar e disponibilizar receitas culi
 * Cadastrar, editar, excluir e consultar receitas (CRUD);
 * Receber recomendações de pratos com base no **perfil nutricional pessoal**;
 * Manter um **repositório pessoal de receitas favoritas**;
-* Explorar novas receitas por **nome ou ingrediente**;
 * Aproveitar uma **interface simples e intuitiva**.
 
 ---
@@ -38,10 +37,8 @@ Usuários que desejam **organizar suas receitas**, **personalizar sua alimentaç
 ## ⚙️ Principais Funcionalidades
 
 * **Definição do Perfil Nutricional** (preferências, restrições e objetivos alimentares);
-* **Busca de Receitas** por nome ou ingrediente;
 * **Recomendações por Inteligência Artificial**;
 * **CRUD de Receitas** (criação, leitura, atualização e exclusão);
-* **Organização por Categorias** (sobremesas, massas, carnes etc.);
 * **Interface Intuitiva e Moderna**.
 
 ---
@@ -102,22 +99,21 @@ Usuários que desejam **organizar suas receitas**, **personalizar sua alimentaç
 
 ## 🧠 Inteligência Artificial
 
-O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **perfil nutricional** do usuário e das **características das receitas**, gerando recomendações personalizadas com base em:
+O módulo de IA, realiza a análise do **perfil nutricional** do usuário e das **características das receitas**, gerando recomendações personalizadas com base em:
 
-* Ingredientes mais utilizados;
+* Condições Físicas
 * Restrições alimentares;
 * Preferências registradas;
-* Histórico de interações.
 
 ---
 
 ## 🧱 Tecnologias Utilizadas
 
 * **Frontend:** Flutter
-* **Backend:** Integração com banco de dados (Maria Eduarda Martins)
-* **IA:** Módulo de recomendação inteligente (Rafael Jardim) (a ser implementado)
+* **Backend:** 
+* **IA:** Gemini
 * **Controle de Versão:** Git e GitHub
-* **Design:** UI/UX com foco em usabilidade (Mateus Evangelista)
+  
 
 ---
 
@@ -126,7 +122,7 @@ O módulo de IA, desenvolvido por **Rafael Jardim**, realiza a análise do **per
 1. O usuário faz **login** ou cria uma conta.
 2. Define seu **perfil nutricional** (restrições e preferências).
 3. Acessa a **lista de receitas** ou cadastra novas.
-4. Recebe **recomendações automáticas** via IA.(sera implementado sprint 4)
+4. Recebe **recomendações automáticas** via IA.
 5. Pode **editar, excluir ou favoritar** receitas.
 
 ---
