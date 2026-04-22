@@ -6,6 +6,7 @@ class Recipe {
   String restrictions;
   String? imagePath; // Campo para o caminho da imagem
   int userId; // Foreign Key
+  int? categoryId; // Foreign Key para Category
 
   Recipe({
     this.id,
@@ -15,6 +16,7 @@ class Recipe {
     required this.restrictions,
     this.imagePath,
     required this.userId,
+    this.categoryId,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class Recipe {
       'restrictions': restrictions,
       'imagePath': imagePath,
       'userId': userId,
+      'categoryId': categoryId,
     };
   }
 
@@ -38,6 +41,7 @@ class Recipe {
       restrictions: map['restrictions'],
       imagePath: map['imagePath'],
       userId: map['userId'],
+      categoryId: map['categoryId'],
     );
   }
 }

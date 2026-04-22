@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meu_app/database_helper.dart';
 import 'package:meu_app/models/profile.dart';
 import 'package:meu_app/notification_service.dart';
+import 'package:meu_app/category_screen.dart';
 
 // Cores que definimos anteriormente para manter o padrão
 const Color corAmareloPrincipal = Color(0xFFFBC02D);
@@ -204,6 +205,24 @@ class _PerfilNutricionalScreenState extends State<PerfilNutricionalScreen> {
               _buildTextField(controller: _objetivoController, label: 'Objetivo', icon: Icons.flag),
               const SizedBox(height: 16),
               _buildTextField(controller: _restricoesController, label: 'Restrições alimentares', icon: Icons.no_food),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CategoryScreen()),
+                  );
+                },
+                icon: const Icon(Icons.category),
+                label: const Text('Gerenciar Categorias'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: corAmareloPrincipal,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
               const SizedBox(height: 32),
               Row(
                 children: [

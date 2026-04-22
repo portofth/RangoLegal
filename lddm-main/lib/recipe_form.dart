@@ -7,6 +7,7 @@ import 'package:meu_app/image_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meu_app/notification_service.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:meu_app/models/category.dart';
 
 class RecipeForm extends StatefulWidget {
   final Recipe? recipe;
@@ -25,6 +26,9 @@ class _RecipeFormState extends State<RecipeForm> {
   
   String? _selectedImagePath;
   bool _isLoading = false;
+  List<Category> _categories = [];
+  Category? _selectedCategory;
+  final TextEditingController _newCategoryController = TextEditingController();
 
   @override
   void initState() {
@@ -36,6 +40,68 @@ class _RecipeFormState extends State<RecipeForm> {
       _restrictionsController.text = widget.recipe!.restrictions;
       _selectedImagePath = widget.recipe!.imagePath;
     }
+    _loadCategories();
+  }
+
+  Future<void> _loadCategories() async {
+    final db = DatabaseHelper();
+    final categories = await db.getAllCategories();
+    setState(() {
+      _categories = categories;
+      if (widget.recipe != null && widget.recipe!.categoryId != null) {
+        _selectedCategory = categories.firstWhere(
+          (cat) => cat.id == widget.recipe!.categoryId,
+          orElse: () => categories.first,
+        );
+      }
+    });
+  }
+
+  Future<void> _createNewCategory() async {
+    final categoryName = _newCategoryController.text.trim();
+    if (categoryName.isEmpty) return;
+
+    final db = DatabaseHelper();
+    final newCategory = Category(name: categoryName);
+    final id = await db.insertCategory(newCategory);
+    
+    if (id > 0) {
+      _newCategoryController.clear();
+      await _loadCategories();
+      setState(() {
+        _selectedCategory = _categories.firstWhere((cat) => cat.id == id);
+      });
+    }
+  }
+
+  void _showCreateCategoryDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Nova Categoria'),
+        content: TextField(
+          controller: _newCategoryController,
+          decoration: const InputDecoration(
+            labelText: 'Nome da Categoria',
+            border: OutlineInputBorder(),
+          ),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await _createNewCategory();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Criar'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -44,6 +110,7 @@ class _RecipeFormState extends State<RecipeForm> {
     _ingredientsController.dispose();
     _preparationController.dispose();
     _restrictionsController.dispose();
+    _newCategoryController.dispose();
     super.dispose();
   }
 
@@ -90,6 +157,7 @@ class _RecipeFormState extends State<RecipeForm> {
       restrictions: _restrictionsController.text.trim(),
       imagePath: _selectedImagePath,
       userId: userId,
+      categoryId: _selectedCategory?.id,
     );
 
     final db = DatabaseHelper();
@@ -251,6 +319,45 @@ class _RecipeFormState extends State<RecipeForm> {
                   ),
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
+                ),
+                const SizedBox(height: 12),
+
+                // Categoria
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<Category>(
+                        initialValue: _selectedCategory,
+                        decoration: const InputDecoration(
+                          labelText: 'Categoria',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.category),
+                        ),
+                        items: _categories.map((category) {
+                          return DropdownMenuItem<Category>(
+                            value: category,
+                            child: Text(category.name),
+                          );
+                        }).toList(),
+                        onChanged: (Category? newValue) {
+                          setState(() {
+                            _selectedCategory = newValue;
+                          });
+                        },
+                        hint: const Text('Selecione uma categoria (opcional)'),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      onPressed: _showCreateCategoryDialog,
+                      icon: const Icon(Icons.add),
+                      tooltip: 'Criar nova categoria',
+                      style: IconButton.styleFrom(
+                        backgroundColor: corAmareloPrincipal,
+                        foregroundColor: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 24),
 

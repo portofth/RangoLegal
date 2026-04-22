@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:meu_app/models/user.dart';
 import 'package:meu_app/models/profile.dart';
 import 'package:meu_app/models/recipe.dart';
+import 'package:meu_app/models/category.dart';
 import 'package:meu_app/dados_receitas.dart';
 import 'package:meu_app/notification_service.dart';
 
@@ -20,6 +21,7 @@ class DatabaseHelper {
   static Box<Map>? _hiveUsersBox;
   static Box<Map>? _hiveProfilesBox;
   static Box<Map>? _hiveRecipesBox;
+  static Box<Map>? _hiveCategoriesBox;
   static Box<dynamic>? _hiveCountersBox;
 
   Future<void> initializeHive() async {
@@ -28,6 +30,7 @@ class DatabaseHelper {
       _hiveUsersBox = await Hive.openBox<Map>('users');
       _hiveProfilesBox = await Hive.openBox<Map>('profiles');
       _hiveRecipesBox = await Hive.openBox<Map>('recipes');
+      _hiveCategoriesBox = await Hive.openBox<Map>('categories');
       _hiveCountersBox = await Hive.openBox('counters');
       
       // Inicializa contadores se não existirem
@@ -39,6 +42,9 @@ class DatabaseHelper {
       }
       if (!_hiveCountersBox!.containsKey('recipe_id')) {
         _hiveCountersBox!.put('recipe_id', 1);
+      }
+      if (!_hiveCountersBox!.containsKey('category_id')) {
+        _hiveCountersBox!.put('category_id', 1);
       }
       
       // ignore: avoid_print
@@ -65,6 +71,12 @@ class DatabaseHelper {
     return id;
   }
 
+  int _getNextCategoryId() {
+    int id = _hiveCountersBox!.get('category_id', defaultValue: 1) as int;
+    _hiveCountersBox!.put('category_id', id + 1);
+    return id;
+  }
+
   Future<Database> get database async {
     if (kIsWeb) {
       throw Exception('Use Hive em Web! Chame initializeHive() primeiro.');
@@ -81,7 +93,7 @@ class DatabaseHelper {
       String path = join(documentsDirectory.path, 'rango_legal.db');
       return await openDatabase(
         path,
-        version: 2,
+        version: 3,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
       );
@@ -130,7 +142,16 @@ class DatabaseHelper {
         restrictions TEXT,
         imagePath TEXT, 
         userId INTEGER,
-        FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE
+        categoryId INTEGER,
+        FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE,
+        FOREIGN KEY (categoryId) REFERENCES Categories(id) ON DELETE SET NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE Categories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL UNIQUE
       )
     ''');
 
@@ -143,6 +164,16 @@ class DatabaseHelper {
     if (oldVersion < 2) {
       // Adiciona a coluna imagePath
       await db.execute("ALTER TABLE Recipes ADD COLUMN imagePath TEXT;");
+    }
+    if (oldVersion < 3) {
+      // Adiciona a coluna categoryId e tabela Categories
+      await db.execute("ALTER TABLE Recipes ADD COLUMN categoryId INTEGER;");
+      await db.execute('''
+        CREATE TABLE Categories (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL UNIQUE
+        )
+      ''');
     }
   }
 
@@ -163,6 +194,7 @@ class DatabaseHelper {
         'restrictions': restrictions,
         'imagePath': image,
         'userId': null,
+        'categoryId': null,
       });
     }
   }
@@ -183,6 +215,7 @@ class DatabaseHelper {
           'restrictions': restrictions,
           'imagePath': image,
           'userId': null,
+          'categoryId': null,
         });
       }
     }
@@ -473,6 +506,81 @@ class DatabaseHelper {
       );
       if (rows > 0) NotificationService.instance.notify('recipes_db_updated');
       return rows;
+    }
+  }
+
+  // --- Operações CRUD (Categories) ---
+  Future<int> insertCategory(Category category) async {
+    if (kIsWeb) {
+      final categoryMap = category.toMap();
+      categoryMap['id'] = _getNextCategoryId();
+      await _hiveCategoriesBox!.add(categoryMap);
+      return categoryMap['id'] as int;
+    } else {
+      Database db = await database;
+      return await db.insert('Categories', category.toMap());
+    }
+  }
+
+  Future<List<Category>> getAllCategories() async {
+    if (kIsWeb) {
+      List<Category> categories = [];
+      for (var category in _hiveCategoriesBox!.values) {
+        categories.add(Category.fromMap(category.cast<String, dynamic>()));
+      }
+      return categories;
+    } else {
+      Database db = await database;
+      List<Map<String, dynamic>> maps = await db.query('Categories', orderBy: 'name ASC');
+      return List.generate(maps.length, (i) {
+        return Category.fromMap(maps[i]);
+      });
+    }
+  }
+
+  Future<int> updateCategory(Category category) async {
+    if (kIsWeb) {
+      int index = -1;
+      for (int i = 0; i < _hiveCategoriesBox!.length; i++) {
+        final c = _hiveCategoriesBox!.getAt(i);
+        if (c?['id'] == category.id) {
+          index = i;
+          break;
+        }
+      }
+      if (index >= 0) {
+        await _hiveCategoriesBox!.putAt(index, category.toMap());
+        return 1;
+      }
+      return 0;
+    } else {
+      Database db = await database;
+      return await db.update(
+        'Categories',
+        category.toMap(),
+        where: 'id = ?',
+        whereArgs: [category.id],
+      );
+    }
+  }
+
+  Future<int> deleteCategory(int id) async {
+    if (kIsWeb) {
+      for (int i = 0; i < _hiveCategoriesBox!.length; i++) {
+        final c = _hiveCategoriesBox!.getAt(i);
+        if (c?['id'] == id) {
+          await _hiveCategoriesBox!.deleteAt(i);
+          return 1;
+        }
+      }
+      return 0;
+    } else {
+      Database db = await database;
+      return await db.delete(
+        'Categories',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
     }
   }
 

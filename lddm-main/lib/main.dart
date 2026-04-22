@@ -17,6 +17,7 @@ import 'package:meu_app/database_helper.dart';
 import 'package:meu_app/models/recipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'recipe_form.dart';
+import 'package:meu_app/models/category.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Cores personalizadas
@@ -253,11 +254,14 @@ class TelaReceitas extends StatefulWidget {
 class _TelaReceitasState extends State<TelaReceitas> {
   final DatabaseHelper _db = DatabaseHelper();
   List<Recipe> _recipes = [];
+  List<Category> _categories = [];
+  Category? _selectedCategoryFilter;
 
   @override
   void initState() {
     super.initState();
     _loadRecipes();
+    _loadCategories();
   }
 
   Future<void> _loadRecipes() async {
@@ -273,6 +277,13 @@ class _TelaReceitasState extends State<TelaReceitas> {
     }
     setState(() {
       _recipes = recs;
+    });
+  }
+
+  Future<void> _loadCategories() async {
+    final categories = await _db.getAllCategories();
+    setState(() {
+      _categories = categories;
     });
   }
 
@@ -355,6 +366,11 @@ class _TelaReceitasState extends State<TelaReceitas> {
 
   @override
   Widget build(BuildContext context) {
+    // Filtrar receitas por categoria se selecionada
+    final recipesFiltradas = _selectedCategoryFilter == null
+        ? _recipes
+        : _recipes.where((recipe) => recipe.categoryId == _selectedCategoryFilter!.id).toList();
+
     return _recipes.isEmpty
         ? Center(
             child: Padding(
@@ -372,62 +388,98 @@ class _TelaReceitasState extends State<TelaReceitas> {
               ),
             ),
           )
-        : ListView.builder(
-            itemCount: _recipes.length,
-            itemBuilder: (context, index) {
-              final receita = _recipes[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                elevation: 2,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(12.0),
-                  leading: _buildRecipeImage(receita),
-                  title: Text(
-                    receita.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+        : Column(
+            children: [
+              // Filtro de categoria
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: DropdownButtonFormField<Category>(
+                  initialValue: _selectedCategoryFilter,
+                  decoration: const InputDecoration(
+                    labelText: 'Filtrar por Categoria',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.filter_list),
                   ),
-                  subtitle: Text(receita.restrictions),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetalheReceitaScreen(receita: receita),
+                  items: [
+                    const DropdownMenuItem<Category>(
+                      value: null,
+                      child: Text('Todas as categorias'),
+                    ),
+                    ..._categories.map((category) {
+                      return DropdownMenuItem<Category>(
+                        value: category,
+                        child: Text(category.name),
+                      );
+                    }).toList(),
+                  ],
+                  onChanged: (Category? newValue) {
+                    setState(() {
+                      _selectedCategoryFilter = newValue;
+                    });
+                  },
+                ),
+              ),
+              // Lista de receitas
+              Expanded(
+                child: ListView.builder(
+                  itemCount: recipesFiltradas.length,
+                  itemBuilder: (context, index) {
+                    final receita = recipesFiltradas[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(12.0),
+                        leading: _buildRecipeImage(receita),
+                        title: Text(
+                          receita.name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(receita.restrictions),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetalheReceitaScreen(receita: receita),
+                            ),
+                          );
+                        },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () => _openRecipeForm(receita),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.redAccent),
+                              onPressed: () async {
+                                final confirm = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Excluir receita'),
+                                    content: const Text('Deseja realmente excluir esta receita?'),
+                                    actions: [
+                                      TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancelar')),
+                                      TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Excluir')),
+                                    ],
+                                  ),
+                                );
+                                if (confirm == true) {
+                                  await _db.deleteRecipe(receita.id ?? 0);
+                                  await _loadRecipes();
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () => _openRecipeForm(receita),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.redAccent),
-                        onPressed: () async {
-                          final confirm = await showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Excluir receita'),
-                              content: const Text('Deseja realmente excluir esta receita?'),
-                              actions: [
-                                TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancelar')),
-                                TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Excluir')),
-                              ],
-                            ),
-                          );
-                          if (confirm == true) {
-                            await _db.deleteRecipe(receita.id ?? 0);
-                            await _loadRecipes();
-                          }
-                        },
-                      ),
-                    ],
-                  ),
                 ),
-              );
-            },
+              ),
+            ],
           );
   }
 }
